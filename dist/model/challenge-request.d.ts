@@ -1,19 +1,43 @@
-import { IProof, Proof } from './proof';
+import { IProofParams, Proof } from './proof';
 import { OrderedModel } from './ordered-model';
+/**
+ * A verifier can specify the allowed issuers and, optionally,
+ * Zero Knowledge Proof boundaries per predicate.
+ */
 export interface IToVerifyParams {
     predicate: string;
     allowedIssuers?: string[];
     lowerBound?: number;
     upperBound?: number;
 }
+/**
+ * The issuer specifies which predicates will be issued.
+ * This interface provides flexibility for the issuer to
+ * add more metadata or constraints for each predicate in
+ * the future.
+ */
 export interface IToAttestParams {
     predicate: string;
 }
+/**
+ * This interface declares the parameters needed to construct a
+ * ChallengeRequest. This interface does not specify the structure
+ * of a ChallengeRequest. Due to unclarities, this interface will
+ * be renamed to IProofParams.
+ *
+ * @deprecated Will be removed in v0.2, use IChallengeRequestParams instead
+ */
 export interface IChallengeRequest {
     toAttest?: IToAttestParams[];
     toVerify?: IToVerifyParams[];
-    proof?: IProof;
+    proof?: IProofParams;
     correspondenceId?: string;
+}
+/**
+ * Declares the needed parameters
+ * to construct a ChallengeRequest
+ */
+export interface IChallengeRequestParams extends IChallengeRequest {
 }
 /**
  * Challenge Request model that enables an issuer/verifier
@@ -26,7 +50,7 @@ export declare class ChallengeRequest extends OrderedModel {
     private readonly _toVerify;
     private readonly _proof;
     private readonly _correspondenceId;
-    constructor(obj: IChallengeRequest);
+    constructor(obj: IChallengeRequestParams);
     /**
      * This is the correspondence ID which will
      * be used in the VP proof (nonce field)

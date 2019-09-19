@@ -1,10 +1,24 @@
 import { OrderedModel } from './ordered-model';
+/**
+ * This interface declares the parameters needed to construct a
+ * Proof. This interface does not specify the structure of
+ * a Proof. Due to unclarities, this interface will be
+ * renamed to IProofParams.
+ *
+ * @deprecated Will be removed in v0.2, use IProofParams instead
+ */
 export interface IProof {
     type: string;
     created: Date;
     verificationMethod: string;
     nonce?: string;
     signatureValue?: string | undefined;
+}
+/**
+ * Declares the needed parameters
+ * to construct a Proof
+ */
+export interface IProofParams extends IProof {
 }
 /**
  * JSON-LD Proof model
@@ -18,7 +32,7 @@ export declare class Proof extends OrderedModel {
     private readonly _verificationMethod;
     private readonly _nonce;
     private _signatureValue;
-    constructor(obj: IProof);
+    constructor(obj: IProofParams);
     /**
      * The nonce in uuidv4 format
      *

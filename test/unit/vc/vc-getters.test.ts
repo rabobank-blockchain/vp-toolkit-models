@@ -16,7 +16,7 @@
 
 import * as sinon from 'sinon'
 import { assert } from 'chai'
-import { IProof, IVerifiableCredential, Proof, VerifiableCredential } from '../../../src'
+import { IProofParams, IVerifiableCredentialParams, Proof, VerifiableCredential } from '../../../src'
 import { testCredentialParams } from '../test-helper'
 
 describe('verifiable credential getters', function () {
@@ -71,7 +71,7 @@ describe('verifiable credential getters', function () {
   })
 
   it('should return an proof type', () => {
-    assert.deepEqual(sut.proof, new Proof(testCredentialParams.proof as IProof))
+    assert.deepEqual(sut.proof, new Proof(testCredentialParams.proof as IProofParams))
   })
 
   it('should set additional fields properly', () => {
@@ -87,7 +87,7 @@ describe('verifiable credential getters', function () {
       testFieldOne: 'abc',
       testFieldTwo: ['def'],
       testFieldThree: 3
-    } as IVerifiableCredential)
+    } as IVerifiableCredentialParams)
 
     assert.equal(Object.keys(vcSut.additionalFields).length, 3)
     assert.deepEqual(vcSut.additionalFields['testFieldOne'], 'abc')
@@ -104,7 +104,7 @@ describe('verifiable credential getters', function () {
   })
 
   it('should return a correct flattened object with extra optional fields', () => {
-    const proof = testCredentialParams.proof as IProof
+    const proof = testCredentialParams.proof as IProofParams
     const vcSut = new VerifiableCredential({
       id: testCredentialParams.id,
       type: testCredentialParams.type,
@@ -117,7 +117,7 @@ describe('verifiable credential getters', function () {
       testFieldOne: 'abc',
       testFieldTwo: ['def'],
       testFieldThree: 3
-    } as IVerifiableCredential)
+    } as IVerifiableCredentialParams)
 
     assert.deepEqual(JSON.stringify(vcSut), `{"id":"did:protocol:address","type":["VerifiableCredential"],"issuer":"did:protocol:issueraddress","issuanceDate":"${testCredentialParams.issuanceDate.toISOString()}","credentialSubject":{"id":"did:protocol:holderaddress","type":"John"},"proof":{"type":"SignatureAlgorithmName","created":"${proof.created.toISOString()}","verificationMethod":"verification method","nonce":"${proof.nonce}"},"credentialStatus":{"type":"vcStatusRegistry2019","id":"0x6AbAAFB672f60C16C604A29426aDA1Af9d96d440"},"@context":["https://www.w3.org/2018/credentials/v1","https://schema.org/givenName"],"testFieldOne":"abc","testFieldTwo":["def"],"testFieldThree":3}`)
   })

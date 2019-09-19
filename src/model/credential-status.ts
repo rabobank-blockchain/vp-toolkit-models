@@ -17,9 +17,25 @@
 import { classToPlain, Expose } from 'class-transformer'
 import { OrderedModel } from './ordered-model'
 
+/**
+ * This interface declares the parameters needed to construct a
+ * CredentialStatus. This interface does not specify the structure
+ * of a CredentialStatus. Due to unclarities, this interface will
+ * be renamed to ICredentialStatusParams.
+ *
+ * @deprecated Will be removed in v0.2, use ICredentialStatusParams instead
+ */
 export interface ICredentialStatus {
   id: string
   type: string
+}
+
+/**
+ * Declares the needed parameters
+ * to construct a CredentialStatus
+ */
+// tslint:disable-next-line
+export interface ICredentialStatusParams extends ICredentialStatus {
 }
 
 /**
@@ -32,7 +48,7 @@ export class CredentialStatus extends OrderedModel {
   private readonly _id: string
   private readonly _type: string
 
-  constructor (obj: ICredentialStatus) {
+  constructor (obj: ICredentialStatusParams) {
     if (!obj.id || !obj.type) {
       throw new ReferenceError('One or more fields are empty')
     }

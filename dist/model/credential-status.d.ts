@@ -1,7 +1,21 @@
 import { OrderedModel } from './ordered-model';
+/**
+ * This interface declares the parameters needed to construct a
+ * CredentialStatus. This interface does not specify the structure
+ * of a CredentialStatus. Due to unclarities, this interface will
+ * be renamed to ICredentialStatusParams.
+ *
+ * @deprecated Will be removed in v0.2, use ICredentialStatusParams instead
+ */
 export interface ICredentialStatus {
     id: string;
     type: string;
+}
+/**
+ * Declares the needed parameters
+ * to construct a CredentialStatus
+ */
+export interface ICredentialStatusParams extends ICredentialStatus {
 }
 /**
  * W3C Verifiable Credential CredentialStatus model
@@ -12,7 +26,7 @@ export interface ICredentialStatus {
 export declare class CredentialStatus extends OrderedModel {
     private readonly _id;
     private readonly _type;
-    constructor(obj: ICredentialStatus);
+    constructor(obj: ICredentialStatusParams);
     /**
      * The name of the credential status type
      * @return string

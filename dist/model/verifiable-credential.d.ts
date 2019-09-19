@@ -1,15 +1,29 @@
-import { IProof, Proof } from './proof';
-import { CredentialStatus, ICredentialStatus } from './credential-status';
+import { IProofParams, Proof } from './proof';
+import { CredentialStatus, ICredentialStatusParams } from './credential-status';
 import { OrderedModel } from './ordered-model';
+/**
+ * This interface declares the parameters needed to construct a
+ * VerifiableCredential. This interface does not specify the structure of
+ * a VerifiableCredential. Due to unclarities, this interface will be
+ * renamed to IVerifiableCredentialParams.
+ *
+ * @deprecated Will be removed in v0.2, use IVerifiableCredentialParams instead
+ */
 export interface IVerifiableCredential {
     id?: string;
     type: string[];
     issuer: string;
     issuanceDate: Date;
     credentialSubject: any;
-    proof?: IProof;
-    credentialStatus?: ICredentialStatus;
+    proof?: IProofParams;
+    credentialStatus?: ICredentialStatusParams;
     '@context'?: string[];
+}
+/**
+ * Declares the needed parameters
+ * to construct a VerifiableCredential
+ */
+export interface IVerifiableCredentialParams extends IVerifiableCredential {
 }
 /**
  * W3C Verifiable Credential model (VC)
@@ -25,7 +39,7 @@ export declare class VerifiableCredential extends OrderedModel {
     private readonly _credentialStatus;
     private readonly _context;
     private readonly _additionalFields;
-    constructor(obj: IVerifiableCredential);
+    constructor(obj: IVerifiableCredentialParams);
     /**
      * The context for this VC, used to give
      * context to the credentialsubject values
