@@ -24,12 +24,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const proof_1 = require("./proof");
 const credential_status_1 = require("./credential-status");
 const class_transformer_1 = require("class-transformer");
-const ordered_model_1 = require("./ordered-model");
+const flexible_ordered_model_1 = require("./flexible-ordered-model");
 /**
  * W3C Verifiable Credential model (VC)
  * @see https://w3c.github.io/vc-data-model/#credentials
  */
-class VerifiableCredential extends ordered_model_1.OrderedModel {
+class VerifiableCredential extends flexible_ordered_model_1.FlexibleOrderedModel {
     constructor(obj) {
         if (!obj.type || obj.type.length === 0 || obj.type.join().length === obj.type.length - 1
             || !obj.issuer || !obj.issuanceDate || !obj.credentialSubject || !obj.proof) {
@@ -44,15 +44,7 @@ class VerifiableCredential extends ordered_model_1.OrderedModel {
         this._proof = new proof_1.Proof(obj.proof);
         this._credentialStatus = obj.credentialStatus ? new credential_status_1.CredentialStatus(obj.credentialStatus) : undefined;
         this._context = obj['@context'];
-        this._additionalFields = [];
-        const vcObjectKeys = Object.keys(class_transformer_1.classToPlain(this));
-        const objAsArray = obj;
-        for (const key of Object.keys(obj)) {
-            // Give other dynamic fields a place inside this model
-            if (!vcObjectKeys.includes(key)) {
-                this._additionalFields[key] = objAsArray[key];
-            }
-        }
+        this.initializeAdditionalFields(obj, this);
     }
     /**
      * The context for this VC, used to give
@@ -129,29 +121,6 @@ class VerifiableCredential extends ordered_model_1.OrderedModel {
      */
     get credentialStatus() {
         return this._credentialStatus;
-    }
-    /**
-     * Issuers can decide to add more fields
-     * to the credential. This property will
-     * return all fields as key-value pairs.
-     * @return any
-     */
-    get additionalFields() {
-        return this._additionalFields;
-    }
-    /**
-     * Converts a VerifiableCredential object
-     * to a json string using the exact same
-     * field order as it was constructed.
-     * @return object
-     */
-    toJSON() {
-        const unorderedObj = class_transformer_1.classToPlain(this, { excludePrefixes: ['_'] });
-        // Merge the dynamic fields with the VC object
-        for (const key of Object.keys(this._additionalFields)) {
-            unorderedObj[key] = this._additionalFields[key];
-        }
-        return this.orderPlainObject(unorderedObj);
     }
 }
 __decorate([

@@ -1,6 +1,6 @@
 import { IProofParams, Proof } from './proof';
 import { CredentialStatus, ICredentialStatusParams } from './credential-status';
-import { OrderedModel } from './ordered-model';
+import { FlexibleOrderedModel } from './flexible-ordered-model';
 /**
  * This interface declares the parameters needed to construct a
  * VerifiableCredential. This interface does not specify the structure of
@@ -29,7 +29,7 @@ export interface IVerifiableCredentialParams extends IVerifiableCredential {
  * W3C Verifiable Credential model (VC)
  * @see https://w3c.github.io/vc-data-model/#credentials
  */
-export declare class VerifiableCredential extends OrderedModel {
+export declare class VerifiableCredential extends FlexibleOrderedModel {
     private readonly _id?;
     private readonly _type;
     private readonly _issuer;
@@ -38,7 +38,6 @@ export declare class VerifiableCredential extends OrderedModel {
     private readonly _proof;
     private readonly _credentialStatus;
     private readonly _context;
-    private readonly _additionalFields;
     constructor(obj: IVerifiableCredentialParams);
     /**
      * The context for this VC, used to give
@@ -98,18 +97,4 @@ export declare class VerifiableCredential extends OrderedModel {
      * @return CredentialStatus|undefined
      */
     readonly credentialStatus: CredentialStatus | undefined;
-    /**
-     * Issuers can decide to add more fields
-     * to the credential. This property will
-     * return all fields as key-value pairs.
-     * @return any
-     */
-    readonly additionalFields: any;
-    /**
-     * Converts a VerifiableCredential object
-     * to a json string using the exact same
-     * field order as it was constructed.
-     * @return object
-     */
-    toJSON(): object;
 }

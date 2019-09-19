@@ -16,8 +16,8 @@
 
 import { IProofParams, Proof } from './proof'
 import { CredentialStatus, ICredentialStatusParams } from './credential-status'
-import { classToPlain, Expose, Transform } from 'class-transformer'
-import { OrderedModel } from './ordered-model'
+import { Expose, Transform } from 'class-transformer'
+import { FlexibleOrderedModel } from './flexible-ordered-model'
 
 /**
  * This interface declares the parameters needed to construct a
@@ -50,7 +50,7 @@ export interface IVerifiableCredentialParams extends IVerifiableCredential {
  * W3C Verifiable Credential model (VC)
  * @see https://w3c.github.io/vc-data-model/#credentials
  */
-export class VerifiableCredential extends OrderedModel {
+export class VerifiableCredential extends FlexibleOrderedModel {
   private readonly _id?: string
   private readonly _type: string[]
   private readonly _issuer: string
@@ -59,7 +59,6 @@ export class VerifiableCredential extends OrderedModel {
   private readonly _proof: Proof
   private readonly _credentialStatus: CredentialStatus | undefined
   private readonly _context: string[] | undefined
-  private readonly _additionalFields: any
 
   constructor (obj: IVerifiableCredentialParams) {
     if (!obj.type || obj.type.length === 0 || obj.type.join().length === obj.type.length - 1
@@ -76,16 +75,7 @@ export class VerifiableCredential extends OrderedModel {
     this._proof = new Proof(obj.proof)
     this._credentialStatus = obj.credentialStatus ? new CredentialStatus(obj.credentialStatus) : undefined
     this._context = obj['@context']
-    this._additionalFields = []
-
-    const vcObjectKeys = Object.keys(classToPlain(this))
-    const objAsArray = obj as any
-    for (const key of Object.keys(obj)) {
-      // Give other dynamic fields a place inside this model
-      if (!vcObjectKeys.includes(key)) {
-        this._additionalFields[key] = objAsArray[key]
-      }
-    }
+    this.initializeAdditionalFields(obj, this)
   }
 
   /**
@@ -184,32 +174,4 @@ export class VerifiableCredential extends OrderedModel {
   public get credentialStatus (): CredentialStatus | undefined {
     return this._credentialStatus
   }
-
-  /**
-   * Issuers can decide to add more fields
-   * to the credential. This property will
-   * return all fields as key-value pairs.
-   * @return any
-   */
-  public get additionalFields (): any {
-    return this._additionalFields
-  }
-
-  /**
-   * Converts a VerifiableCredential object
-   * to a json string using the exact same
-   * field order as it was constructed.
-   * @return object
-   */
-  public toJSON (): object {
-    const unorderedObj = classToPlain(this, { excludePrefixes: ['_'] }) as any
-
-    // Merge the dynamic fields with the VC object
-    for (const key of Object.keys(this._additionalFields)) {
-      unorderedObj[key] = this._additionalFields[key]
-    }
-
-    return this.orderPlainObject(unorderedObj)
-  }
-
 }
