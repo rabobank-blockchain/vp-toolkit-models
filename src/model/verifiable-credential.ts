@@ -42,6 +42,7 @@ export interface IVerifiableCredential {
  * Declares the needed parameters
  * to construct a VerifiableCredential
  */
+// tslint:disable-next-line
 export interface IVerifiableCredentialParams extends IVerifiableCredential {
 }
 

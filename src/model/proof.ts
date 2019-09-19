@@ -38,6 +38,7 @@ export interface IProof {
  * Declares the needed parameters
  * to construct a Proof
  */
+// tslint:disable-next-line
 export interface IProofParams extends IProof {
 }
 

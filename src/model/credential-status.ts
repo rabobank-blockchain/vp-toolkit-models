@@ -34,6 +34,7 @@ export interface ICredentialStatus {
  * Declares the needed parameters
  * to construct a CredentialStatus
  */
+// tslint:disable-next-line
 export interface ICredentialStatusParams extends ICredentialStatus {
 }
 

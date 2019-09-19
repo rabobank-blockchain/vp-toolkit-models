@@ -39,6 +39,7 @@ export interface IVerifiablePresentation {
  * Declares the needed parameters
  * to construct a VerifiablePresentation
  */
+// tslint:disable-next-line
 export interface IVerifiablePresentationParams extends IVerifiablePresentation {
 }
 

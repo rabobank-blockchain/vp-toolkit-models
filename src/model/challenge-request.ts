@@ -60,6 +60,7 @@ export interface IChallengeRequest {
  * Declares the needed parameters
  * to construct a ChallengeRequest
  */
+// tslint:disable-next-line
 export interface IChallengeRequestParams extends IChallengeRequest {
 }
 
