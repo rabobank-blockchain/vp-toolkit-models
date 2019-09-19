@@ -1,12 +1,26 @@
-import { IProof, Proof } from './proof';
+import { IProofParams, Proof } from './proof';
 import { VerifiableCredential } from './verifiable-credential';
 import { OrderedModel } from './ordered-model';
+/**
+ * This interface declares the parameters needed to construct a
+ * VerifiablePresentation. This interface does not specify the structure of
+ * a VerifiablePresentation. Due to unclarities, this interface will be
+ * renamed to IVerifiablePresentationParams.
+ *
+ * @deprecated Will be removed in v0.2, use IVerifiablePresentationParams instead
+ */
 export interface IVerifiablePresentation {
     id?: string;
     type: string[];
     verifiableCredential: VerifiableCredential[];
-    proof?: IProof[];
+    proof?: IProofParams[];
     '@context'?: string[];
+}
+/**
+ * Declares the needed parameters
+ * to construct a VerifiablePresentation
+ */
+export interface IVerifiablePresentationParams extends IVerifiablePresentation {
 }
 /**
  * W3C Verifiable Presentation model (VP)
@@ -18,7 +32,7 @@ export declare class VerifiablePresentation extends OrderedModel {
     private readonly _verifiableCredential;
     private readonly _proof;
     private readonly _context?;
-    constructor(obj: IVerifiablePresentation);
+    constructor(obj: IVerifiablePresentationParams);
     /**
      * Get the identifier for this VP
      *

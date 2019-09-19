@@ -18,12 +18,27 @@ import { v4 as uuid } from 'uuid'
 import { classToPlain, Expose } from 'class-transformer'
 import { OrderedModel } from './ordered-model'
 
+/**
+ * This interface declares the parameters needed to construct a
+ * Proof. This interface does not specify the structure of
+ * a Proof. Due to unclarities, this interface will be
+ * renamed to IProofParams.
+ *
+ * @deprecated Will be removed in v0.2, use IProofParams instead
+ */
 export interface IProof {
   type: string
   created: Date
   verificationMethod: string
   nonce?: string
   signatureValue?: string | undefined
+}
+
+/**
+ * Declares the needed parameters
+ * to construct a Proof
+ */
+export interface IProofParams extends IProof {
 }
 
 /**
@@ -39,7 +54,7 @@ export class Proof extends OrderedModel {
   private readonly _nonce: string
   private _signatureValue: string | undefined
 
-  constructor (obj: IProof) {
+  constructor (obj: IProofParams) {
     if (!obj.type || !obj.created || !obj.verificationMethod) {
       throw new ReferenceError('One or more fields are empty')
     }

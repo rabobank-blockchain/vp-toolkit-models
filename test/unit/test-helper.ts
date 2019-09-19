@@ -18,16 +18,16 @@
 
 import {
   CredentialStatus,
-  IProof,
-  IVerifiableCredential,
-  IVerifiablePresentation,
+  IProofParams,
+  IVerifiableCredentialParams,
+  IVerifiablePresentationParams,
   VerifiableCredential
 } from '../../src'
 
 /**
  * Proof containing a type, created date and verification method with static, fictive data
  */
-export const testProofParams: IProof = {
+export const testProofParams: IProofParams = {
   type: 'SignatureAlgorithmName',
   created: new Date('01-01-2019'),
   verificationMethod: 'verification method',
@@ -80,7 +80,7 @@ export const testCredentialParams = {
   credentialStatus: testCredStatus,
   optionalField: 'optionalContent',
   '@context': ['https://www.w3.org/2018/credentials/v1', 'https://schema.org/givenName']
-} as IVerifiableCredential
+} as IVerifiableCredentialParams
 
 export const testCredential = new VerifiableCredential(testCredentialParams)
 
@@ -92,7 +92,7 @@ export const verifiablePresentationTestData = {
   '@context': ['https://schema.org/givenName']
 }
 
-export const testVp: IVerifiablePresentation = {
+export const testVp: IVerifiablePresentationParams = {
   id: 'urn:uuid:3978344f-8596-4c3a-a978-8fcaba3903c5',
   type: ['VerifiablePresentation'],
   proof: [testProofParams],

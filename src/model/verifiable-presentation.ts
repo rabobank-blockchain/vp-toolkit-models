@@ -14,17 +14,32 @@
  * limitations under the License.
  */
 
-import { IProof, Proof } from './proof'
+import { IProofParams, Proof } from './proof'
 import { VerifiableCredential } from './verifiable-credential'
 import { classToPlain, Expose, Transform } from 'class-transformer'
 import { OrderedModel } from './ordered-model'
 
+/**
+ * This interface declares the parameters needed to construct a
+ * VerifiablePresentation. This interface does not specify the structure of
+ * a VerifiablePresentation. Due to unclarities, this interface will be
+ * renamed to IVerifiablePresentationParams.
+ *
+ * @deprecated Will be removed in v0.2, use IVerifiablePresentationParams instead
+ */
 export interface IVerifiablePresentation {
   id?: string
   type: string[]
   verifiableCredential: VerifiableCredential[]
-  proof?: IProof[]
+  proof?: IProofParams[]
   '@context'?: string[]
+}
+
+/**
+ * Declares the needed parameters
+ * to construct a VerifiablePresentation
+ */
+export interface IVerifiablePresentationParams extends IVerifiablePresentation {
 }
 
 /**
@@ -38,7 +53,7 @@ export class VerifiablePresentation extends OrderedModel {
   private readonly _proof: Proof[]
   private readonly _context?: string[]
 
-  constructor (obj: IVerifiablePresentation) {
+  constructor (obj: IVerifiablePresentationParams) {
     if (!obj.type || obj.type.length === 0 || obj.type.join().length === obj.type.length - 1
       || !obj.verifiableCredential || obj.verifiableCredential.length === 0 || !obj.proof) {
       throw new ReferenceError('One or more fields are empty')

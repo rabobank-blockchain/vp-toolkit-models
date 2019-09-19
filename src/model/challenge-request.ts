@@ -15,10 +15,14 @@
  */
 
 import { v4 as uuid } from 'uuid'
-import { IProof, Proof } from './proof'
+import { IProofParams, Proof } from './proof'
 import { classToPlain, Expose, Transform } from 'class-transformer'
 import { OrderedModel } from './ordered-model'
 
+/**
+ * A verifier can specify the allowed issuers and, optionally,
+ * Zero Knowledge Proof boundaries per predicate.
+ */
 export interface IToVerifyParams {
   predicate: string, // For example, 'http://schema.org/baseSalary'
   allowedIssuers?: string[], // A collection of DID's. Can be empty/undefined to allow all.
@@ -27,15 +31,36 @@ export interface IToVerifyParams {
   upperBound?: number // A value like 1000000
 }
 
+/**
+ * The issuer specifies which predicates will be issued.
+ * This interface provides flexibility for the issuer to
+ * add more metadata or constraints for each predicate in
+ * the future.
+ */
 export interface IToAttestParams {
   predicate: string // For example, 'http://schema.org/givenName'
 }
 
+/**
+ * This interface declares the parameters needed to construct a
+ * ChallengeRequest. This interface does not specify the structure
+ * of a ChallengeRequest. Due to unclarities, this interface will
+ * be renamed to IProofParams.
+ *
+ * @deprecated Will be removed in v0.2, use IChallengeRequestParams instead
+ */
 export interface IChallengeRequest {
   toAttest?: IToAttestParams[]
   toVerify?: IToVerifyParams[]
-  proof?: IProof
+  proof?: IProofParams
   correspondenceId?: string
+}
+
+/**
+ * Declares the needed parameters
+ * to construct a ChallengeRequest
+ */
+export interface IChallengeRequestParams extends IChallengeRequest {
 }
 
 /**
@@ -50,7 +75,7 @@ export class ChallengeRequest extends OrderedModel {
   private readonly _proof: Proof
   private readonly _correspondenceId: string
 
-  constructor (obj: IChallengeRequest) {
+  constructor (obj: IChallengeRequestParams) {
     if (!obj.proof) {
       throw new ReferenceError('One or more fields are empty')
     }

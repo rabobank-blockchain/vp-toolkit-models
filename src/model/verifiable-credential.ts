@@ -14,20 +14,35 @@
  * limitations under the License.
  */
 
-import { IProof, Proof } from './proof'
-import { CredentialStatus, ICredentialStatus } from './credential-status'
+import { IProofParams, Proof } from './proof'
+import { CredentialStatus, ICredentialStatusParams } from './credential-status'
 import { classToPlain, Expose, Transform } from 'class-transformer'
 import { OrderedModel } from './ordered-model'
 
+/**
+ * This interface declares the parameters needed to construct a
+ * VerifiableCredential. This interface does not specify the structure of
+ * a VerifiableCredential. Due to unclarities, this interface will be
+ * renamed to IVerifiableCredentialParams.
+ *
+ * @deprecated Will be removed in v0.2, use IVerifiableCredentialParams instead
+ */
 export interface IVerifiableCredential {
   id?: string
   type: string[]
   issuer: string
   issuanceDate: Date
   credentialSubject: any
-  proof?: IProof
-  credentialStatus?: ICredentialStatus
+  proof?: IProofParams
+  credentialStatus?: ICredentialStatusParams
   '@context'?: string[]
+}
+
+/**
+ * Declares the needed parameters
+ * to construct a VerifiableCredential
+ */
+export interface IVerifiableCredentialParams extends IVerifiableCredential {
 }
 
 /**
@@ -45,7 +60,7 @@ export class VerifiableCredential extends OrderedModel {
   private readonly _context: string[] | undefined
   private readonly _additionalFields: any
 
-  constructor (obj: IVerifiableCredential) {
+  constructor (obj: IVerifiableCredentialParams) {
     if (!obj.type || obj.type.length === 0 || obj.type.join().length === obj.type.length - 1
       || !obj.issuer || !obj.issuanceDate || !obj.credentialSubject || !obj.proof) {
       throw new ReferenceError('One or more fields are empty')

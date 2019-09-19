@@ -28,7 +28,7 @@ You can create the models by passing the required values through the constructor
 
 The example below creates an unsigned VerifiableCredential object. To create a signed object, please use `vp-toolkit`.
 ```typescript
-import { VerifiableCredential, IVerifiableCredential } from 'vp-toolkit-models'
+import { VerifiableCredential, IVerifiableCredentialParams } from 'vp-toolkit-models'
 
 const verifiableCredential = new VerifiableCredential({
   '@context': ['https://www.w3.org/2018/credentials/v1'], // Optional
@@ -56,7 +56,7 @@ const verifiableCredential = new VerifiableCredential({
     nonce: '547d06de-7f1b-4040-8ad0-cbee414a4a7f',
     signatureValue: 'generated signature value'
   }
-} as IVerifiableCredential)
+} as IVerifiableCredentialParams)
 
 // Dynamic fields can be found in the additionalFields property
 const someOtherRandomField = verifiableCredential.additionalFields['someOtherRandomField']
