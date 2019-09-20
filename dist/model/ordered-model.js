@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
+const class_transformer_1 = require("class-transformer");
 /**
  * This super class provides a function
  * to maintain the same order of fields
@@ -23,15 +24,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 class OrderedModel {
     constructor(sourceObj) {
-        // Loop through all object keys and record their indexes, concatenate them with the object keys if they are missing
+        // Loop through all object keys and record their indexes
         this._keyIndexes = Object.keys(sourceObj).map(key => key);
     }
+    /**
+     * Converts this instance to a flat object
+     * @return object
+     */
+    toJSON() {
+        const unorderedObj = class_transformer_1.classToPlain(this, { excludePrefixes: ['_'] });
+        return this.orderPlainObject(unorderedObj);
+    }
+    /**
+     * Place the fields in the right order by using the keyIndexes
+     * @param unorderedObject
+     * @return {any}
+     */
     orderPlainObject(unorderedObject) {
-        const orderedObj = {};
-        const keys = this._keyIndexes.concat(Object.keys(unorderedObject).filter((key) => {
+        const orderedObj = {}; // The result after ordering fields
+        // Get all field names from the keyIndexes. Any unindexed fields
+        // from the given object will be added at the end of the array.
+        const objectFieldNames = this._keyIndexes.concat(Object.keys(unorderedObject).filter((key) => {
             return !this._keyIndexes.includes(key);
         }));
-        for (const key of keys) {
+        // Loop through all ordered keys and construct a new object
+        for (const key of objectFieldNames) {
             orderedObj[key] = unorderedObject[key];
         }
         return orderedObj;

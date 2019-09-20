@@ -15,7 +15,7 @@
  */
 
 import { assert } from 'chai'
-import { VerifiableCredential } from '../../../src'
+import { IVerifiableCredentialParams, VerifiableCredential } from '../../../src'
 import { testCredentialParams } from '../test-helper'
 
 describe('verifiable credential constructor', function () {
@@ -135,8 +135,9 @@ describe('verifiable credential constructor', function () {
       credentialSubject: testCredentialParams.credentialSubject,
       proof: testCredentialParams.proof,
       credentialStatus: testCredentialParams.credentialStatus,
-      '@context': testCredentialParams['@context']
-    })
+      '@context': testCredentialParams['@context'],
+      'optionalField': 12345
+    } as IVerifiableCredentialParams)
 
     const sut1Parsed = JSON.parse(JSON.stringify(sut1))
     const sut2 = new VerifiableCredential(sut1Parsed)

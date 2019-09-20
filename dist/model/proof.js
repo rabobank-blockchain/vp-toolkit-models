@@ -89,15 +89,6 @@ class Proof extends ordered_model_1.OrderedModel {
     set signatureValue(value) {
         this._signatureValue = value;
     }
-    /**
-     * Converts a ChallengeRequest object to a json string.
-     *
-     * @return object
-     */
-    toJSON() {
-        const unorderedObj = class_transformer_1.classToPlain(this, { excludePrefixes: ['_'] });
-        return this.orderPlainObject(unorderedObj);
-    }
 }
 __decorate([
     class_transformer_1.Expose()

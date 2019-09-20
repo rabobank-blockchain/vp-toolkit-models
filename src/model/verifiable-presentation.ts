@@ -16,8 +16,8 @@
 
 import { IProofParams, Proof } from './proof'
 import { VerifiableCredential } from './verifiable-credential'
-import { classToPlain, Expose, Transform } from 'class-transformer'
-import { OrderedModel } from './ordered-model'
+import { Expose, Transform } from 'class-transformer'
+import { FlexibleOrderedModel } from './flexible-ordered-model'
 
 /**
  * This interface declares the parameters needed to construct a
@@ -47,7 +47,7 @@ export interface IVerifiablePresentationParams extends IVerifiablePresentation {
  * W3C Verifiable Presentation model (VP)
  * @see https://w3c.github.io/vc-data-model/#presentations-0
  */
-export class VerifiablePresentation extends OrderedModel {
+export class VerifiablePresentation extends FlexibleOrderedModel {
   private readonly _id?: string
   private readonly _type: string[]
   private readonly _verifiableCredential: VerifiableCredential[]
@@ -69,6 +69,7 @@ export class VerifiablePresentation extends OrderedModel {
     })
     this._proof = obj.proof.map(x => new Proof(x))
     this._context = obj['@context']
+    this.initializeAdditionalFields(obj, this)
   }
 
   /**
@@ -134,17 +135,4 @@ export class VerifiablePresentation extends OrderedModel {
   get '@context' (): string[] | undefined {
     return this._context
   }
-
-  /**
-   * Converts a VerifiablePresentation object
-   * to a json string using the exact same
-   * field order as it was constructed.
-   * @return object
-   */
-  public toJSON (): object {
-    const unorderedObj = classToPlain(this, { excludePrefixes: ['_'] }) as any
-
-    return this.orderPlainObject(unorderedObj)
-  }
-
 }

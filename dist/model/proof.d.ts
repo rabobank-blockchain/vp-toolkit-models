@@ -67,10 +67,4 @@ export declare class Proof extends OrderedModel {
     * Set the signature value
     */
     signatureValue: string | undefined;
-    /**
-     * Converts a ChallengeRequest object to a json string.
-     *
-     * @return object
-     */
-    toJSON(): object;
 }
