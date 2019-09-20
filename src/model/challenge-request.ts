@@ -16,7 +16,7 @@
 
 import { v4 as uuid } from 'uuid'
 import { IProofParams, Proof } from './proof'
-import { classToPlain, Expose, Transform } from 'class-transformer'
+import { Expose, Transform } from 'class-transformer'
 import { OrderedModel } from './ordered-model'
 
 /**
@@ -135,16 +135,4 @@ export class ChallengeRequest extends OrderedModel {
   get proof (): Proof {
     return this._proof
   }
-
-  /**
-   * Converts a ChallengeRequest object to a json string.
-   *
-   * @return object
-   */
-  public toJSON (): object {
-    const unorderedObj = classToPlain(this, { excludePrefixes: ['_'] }) as any
-
-    return this.orderPlainObject(unorderedObj)
-  }
-
 }

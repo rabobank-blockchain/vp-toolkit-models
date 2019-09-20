@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { classToPlain, Expose } from 'class-transformer'
+import { Expose } from 'class-transformer'
 import { OrderedModel } from './ordered-model'
 
 /**
@@ -77,16 +77,4 @@ export class CredentialStatus extends OrderedModel {
   public get id (): string {
     return this._id
   }
-
-  /**
-   * Converts a ChallengeRequest object to a json string.
-   *
-   * @return object
-   */
-  public toJSON (): object {
-    const unorderedObj = classToPlain(this, { excludePrefixes: ['_'] }) as any
-
-    return this.orderPlainObject(unorderedObj)
-  }
-
 }

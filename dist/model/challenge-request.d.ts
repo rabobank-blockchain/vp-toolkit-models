@@ -82,10 +82,4 @@ export declare class ChallengeRequest extends OrderedModel {
      * @return Proof
      */
     readonly proof: Proof;
-    /**
-     * Converts a ChallengeRequest object to a json string.
-     *
-     * @return object
-     */
-    toJSON(): object;
 }

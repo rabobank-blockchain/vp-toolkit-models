@@ -48,7 +48,7 @@ class FlexibleOrderedModel extends ordered_model_1.OrderedModel {
      */
     toJSON() {
         const unorderedObj = class_transformer_1.classToPlain(this, { excludePrefixes: ['_'] });
-        // Merge the dynamic fields with the VC object
+        // Merge the dynamic fields with the object
         for (const key of Object.keys(this._additionalFields)) {
             unorderedObj[key] = this._additionalFields[key];
         }
