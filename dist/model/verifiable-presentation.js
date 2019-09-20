@@ -24,12 +24,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const proof_1 = require("./proof");
 const verifiable_credential_1 = require("./verifiable-credential");
 const class_transformer_1 = require("class-transformer");
-const ordered_model_1 = require("./ordered-model");
+const flexible_ordered_model_1 = require("./flexible-ordered-model");
 /**
  * W3C Verifiable Presentation model (VP)
  * @see https://w3c.github.io/vc-data-model/#presentations-0
  */
-class VerifiablePresentation extends ordered_model_1.OrderedModel {
+class VerifiablePresentation extends flexible_ordered_model_1.FlexibleOrderedModel {
     constructor(obj) {
         if (!obj.type || obj.type.length === 0 || obj.type.join().length === obj.type.length - 1
             || !obj.verifiableCredential || obj.verifiableCredential.length === 0 || !obj.proof) {
@@ -44,6 +44,7 @@ class VerifiablePresentation extends ordered_model_1.OrderedModel {
         });
         this._proof = obj.proof.map(x => new proof_1.Proof(x));
         this._context = obj['@context'];
+        this.initializeAdditionalFields(obj, this);
     }
     /**
      * Get the identifier for this VP
@@ -91,16 +92,6 @@ class VerifiablePresentation extends ordered_model_1.OrderedModel {
      */
     get '@context'() {
         return this._context;
-    }
-    /**
-     * Converts a VerifiablePresentation object
-     * to a json string using the exact same
-     * field order as it was constructed.
-     * @return object
-     */
-    toJSON() {
-        const unorderedObj = class_transformer_1.classToPlain(this, { excludePrefixes: ['_'] });
-        return this.orderPlainObject(unorderedObj);
     }
 }
 __decorate([

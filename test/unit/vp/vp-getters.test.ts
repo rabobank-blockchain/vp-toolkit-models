@@ -15,7 +15,7 @@
  */
 
 import { assert } from 'chai'
-import { Proof, VerifiablePresentation } from '../../../src'
+import { IVerifiablePresentationParams, Proof, VerifiablePresentation } from '../../../src'
 import { verifiablePresentationTestData } from '../test-helper'
 
 describe('verfiable presentation getters', function () {
@@ -41,6 +41,24 @@ describe('verfiable presentation getters', function () {
 
   it('should return an unchanged verifiable credential', () => {
     assert.deepStrictEqual(sut.verifiableCredential, verifiablePresentationTestData.verifiableCredential)
+  })
+
+  it('should set additional fields properly', () => {
+    const vpSut = new VerifiablePresentation({
+      id: verifiablePresentationTestData.id,
+      type: verifiablePresentationTestData.type,
+      verifiableCredential: verifiablePresentationTestData.verifiableCredential,
+      proof: verifiablePresentationTestData.proof,
+      '@context': verifiablePresentationTestData['@context'],
+      'testFieldOne': 'abc',
+      'testFieldTwo': ['def'],
+      'testFieldThree': 3
+    } as IVerifiablePresentationParams)
+
+    assert.equal(Object.keys(vpSut.additionalFields).length, 3)
+    assert.deepEqual(vpSut.additionalFields['testFieldOne'], 'abc')
+    assert.deepEqual(vpSut.additionalFields['testFieldTwo'], ['def'])
+    assert.deepEqual(vpSut.additionalFields['testFieldThree'], 3)
   })
 
   it('should return an unchanged context', () => {
