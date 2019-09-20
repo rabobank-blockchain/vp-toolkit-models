@@ -39,10 +39,4 @@ export declare class CredentialStatus extends OrderedModel {
      * @return string
      */
     readonly id: string;
-    /**
-     * Converts a ChallengeRequest object to a json string.
-     *
-     * @return object
-     */
-    toJSON(): object;
 }

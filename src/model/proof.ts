@@ -15,7 +15,7 @@
  */
 
 import { v4 as uuid } from 'uuid'
-import { classToPlain, Expose } from 'class-transformer'
+import { Expose } from 'class-transformer'
 import { OrderedModel } from './ordered-model'
 
 /**
@@ -125,16 +125,4 @@ export class Proof extends OrderedModel {
   public set signatureValue (value: string | undefined) {
     this._signatureValue = value
   }
-
-  /**
-   * Converts a ChallengeRequest object to a json string.
-   *
-   * @return object
-   */
-  public toJSON (): object {
-    const unorderedObj = classToPlain(this, { excludePrefixes: ['_'] }) as any
-
-    return this.orderPlainObject(unorderedObj)
-  }
-
 }
