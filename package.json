@@ -1,6 +1,6 @@
 {
   "name": "vp-toolkit-models",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Models for the w3c verifiable credentials standard",
   "engines": {
     "node": ">=8.15.0",
