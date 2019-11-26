@@ -54,7 +54,8 @@ export const challengeRequestTestData = {
       upperBound: 150000
     }
   ],
-  correspondenceId: '76b0efea-98e2-4c9b-bbc2-3ccddfc8fdd5'
+  correspondenceId: '76b0efea-98e2-4c9b-bbc2-3ccddfc8fdd5',
+  postEndpoint: 'https://sometestdomain.com/verifiable-presentations'
 }
 
 const testCredStatus = new CredentialStatus({

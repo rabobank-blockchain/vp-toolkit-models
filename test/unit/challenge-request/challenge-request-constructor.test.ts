@@ -24,6 +24,7 @@ describe('challenge request constructor', function () {
     const createSut = () => {
       return new ChallengeRequest({
         toAttest: challengeRequestTestData.toAttest,
+        postEndpoint: challengeRequestTestData.postEndpoint,
         proof: testProofParams
       })
     }
@@ -36,6 +37,7 @@ describe('challenge request constructor', function () {
       return new ChallengeRequest({
         toAttest: [],
         toVerify: challengeRequestTestData.toVerify,
+        postEndpoint: challengeRequestTestData.postEndpoint,
         proof: testProofParams
       })
     }
@@ -47,7 +49,8 @@ describe('challenge request constructor', function () {
     const createSut = () => {
       return new ChallengeRequest({
         toAttest: [],
-        toVerify: challengeRequestTestData.toVerify
+        toVerify: challengeRequestTestData.toVerify,
+        postEndpoint: challengeRequestTestData.postEndpoint
       })
     }
 
@@ -59,6 +62,7 @@ describe('challenge request constructor', function () {
       return new ChallengeRequest({
         toAttest: challengeRequestTestData.toAttest,
         toVerify: challengeRequestTestData.toVerify,
+        postEndpoint: challengeRequestTestData.postEndpoint,
         proof: testProofParams
       })
     }
@@ -70,11 +74,13 @@ describe('challenge request constructor', function () {
     const sut1 = new ChallengeRequest({
       toAttest: challengeRequestTestData.toAttest,
       toVerify: challengeRequestTestData.toVerify,
+      postEndpoint: challengeRequestTestData.postEndpoint,
       proof: testProofParams
     })
     const sut2 = new ChallengeRequest({
       toAttest: challengeRequestTestData.toAttest,
       toVerify: challengeRequestTestData.toVerify,
+      postEndpoint: challengeRequestTestData.postEndpoint,
       proof: testProofParams
     })
 
@@ -85,6 +91,7 @@ describe('challenge request constructor', function () {
     const sut1 = new ChallengeRequest({
       toAttest: challengeRequestTestData.toAttest,
       toVerify: challengeRequestTestData.toVerify,
+      postEndpoint: challengeRequestTestData.postEndpoint,
       proof: testProofParams
     })
 
