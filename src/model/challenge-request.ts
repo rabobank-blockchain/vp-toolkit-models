@@ -17,7 +17,7 @@
 import { v4 as uuid } from 'uuid'
 import { IProofParams, Proof } from './proof'
 import { Expose, Transform } from 'class-transformer'
-import { OrderedModel } from './ordered-model'
+import { FlexibleOrderedModel } from './flexible-ordered-model'
 
 /**
  * A verifier can specify the allowed issuers and, optionally,
@@ -53,6 +53,7 @@ export interface IChallengeRequest {
   toAttest?: IToAttestParams[]
   toVerify?: IToVerifyParams[]
   proof?: IProofParams
+  postEndpoint: string
   correspondenceId?: string
 }
 
@@ -70,10 +71,11 @@ export interface IChallengeRequestParams extends IChallengeRequest {
  *
  * Note: This model is not part of the W3C VC standard.
  */
-export class ChallengeRequest extends OrderedModel {
+export class ChallengeRequest extends FlexibleOrderedModel {
   private readonly _toAttest: IToAttestParams[]
   private readonly _toVerify: IToVerifyParams[]
   private readonly _proof: Proof
+  private readonly _postEndpoint: string
   private readonly _correspondenceId: string
 
   constructor (obj: IChallengeRequestParams) {
@@ -85,6 +87,7 @@ export class ChallengeRequest extends OrderedModel {
     this._toAttest = obj.toAttest || []
     this._toVerify = obj.toVerify || []
     this._proof = new Proof(obj.proof)
+    this._postEndpoint = obj.postEndpoint
     this._correspondenceId = obj.correspondenceId || uuid()
   }
 
@@ -101,6 +104,18 @@ export class ChallengeRequest extends OrderedModel {
   @Expose()
   get correspondenceId (): string {
     return this._correspondenceId
+  }
+
+  /**
+   * This endpoint is used by the holder app
+   * to send information that is requested
+   * in the ChallengeRequest
+   *
+   * @return string
+   */
+  @Expose()
+  get postEndpoint (): string {
+    return this._postEndpoint
   }
 
   /**

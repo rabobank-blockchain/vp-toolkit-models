@@ -24,14 +24,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const uuid_1 = require("uuid");
 const proof_1 = require("./proof");
 const class_transformer_1 = require("class-transformer");
-const ordered_model_1 = require("./ordered-model");
+const flexible_ordered_model_1 = require("./flexible-ordered-model");
 /**
  * Challenge Request model that enables an issuer/verifier
  * to request Verifiable Credentials from the holder.
  *
  * Note: This model is not part of the W3C VC standard.
  */
-class ChallengeRequest extends ordered_model_1.OrderedModel {
+class ChallengeRequest extends flexible_ordered_model_1.FlexibleOrderedModel {
     constructor(obj) {
         if (!obj.proof) {
             throw new ReferenceError('One or more fields are empty');
@@ -40,6 +40,7 @@ class ChallengeRequest extends ordered_model_1.OrderedModel {
         this._toAttest = obj.toAttest || [];
         this._toVerify = obj.toVerify || [];
         this._proof = new proof_1.Proof(obj.proof);
+        this._postEndpoint = obj.postEndpoint;
         this._correspondenceId = obj.correspondenceId || uuid_1.v4();
     }
     /**
@@ -54,6 +55,16 @@ class ChallengeRequest extends ordered_model_1.OrderedModel {
      */
     get correspondenceId() {
         return this._correspondenceId;
+    }
+    /**
+     * This endpoint is used by the holder app
+     * to send information that is requested
+     * in the ChallengeRequest
+     *
+     * @return string
+     */
+    get postEndpoint() {
+        return this._postEndpoint;
     }
     /**
      * The issuer/verifier will attest
@@ -85,6 +96,9 @@ class ChallengeRequest extends ordered_model_1.OrderedModel {
 __decorate([
     class_transformer_1.Expose()
 ], ChallengeRequest.prototype, "correspondenceId", null);
+__decorate([
+    class_transformer_1.Expose()
+], ChallengeRequest.prototype, "postEndpoint", null);
 __decorate([
     class_transformer_1.Expose()
 ], ChallengeRequest.prototype, "toAttest", null);

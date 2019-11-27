@@ -23,6 +23,7 @@ describe('challenge request getters', function () {
     toAttest: challengeRequestTestData.toAttest,
     toVerify: challengeRequestTestData.toVerify,
     correspondenceId: challengeRequestTestData.correspondenceId,
+    postEndpoint: challengeRequestTestData.postEndpoint,
     proof: testProofParams
   })
 
@@ -30,6 +31,7 @@ describe('challenge request getters', function () {
     const challengeRequest = new ChallengeRequest({
       toAttest: challengeRequestTestData.toAttest,
       toVerify: challengeRequestTestData.toVerify,
+      postEndpoint: challengeRequestTestData.postEndpoint,
       proof: testProofParams
     })
 
@@ -41,11 +43,13 @@ describe('challenge request getters', function () {
     const challengeRequest1 = new ChallengeRequest({
       toAttest: challengeRequestTestData.toAttest,
       toVerify: challengeRequestTestData.toVerify,
+      postEndpoint: challengeRequestTestData.postEndpoint,
       proof: testProofParams
     })
     const challengeRequest2 = new ChallengeRequest({
       toAttest: challengeRequestTestData.toAttest,
       toVerify: challengeRequestTestData.toVerify,
+      postEndpoint: challengeRequestTestData.postEndpoint,
       proof: testProofParams
     })
 
@@ -64,9 +68,14 @@ describe('challenge request getters', function () {
     assert.deepEqual(sut.toVerify, challengeRequestTestData.toVerify)
   })
 
+  it('should return an unchanged postEndpoint value', () => {
+    assert.deepEqual(sut.postEndpoint, challengeRequestTestData.postEndpoint)
+  })
+
   it('should return an empty toAttest array if it is undefined', () => {
     const challengeRequest = new ChallengeRequest({
       toVerify: challengeRequestTestData.toVerify,
+      postEndpoint: challengeRequestTestData.postEndpoint,
       proof: testProofParams
     })
     assert.deepEqual(challengeRequest.toAttest, [])
@@ -75,6 +84,7 @@ describe('challenge request getters', function () {
   it('should return an empty toVerify array if it is undefined', () => {
     const challengeRequest = new ChallengeRequest({
       toAttest: challengeRequestTestData.toAttest,
+      postEndpoint: challengeRequestTestData.postEndpoint,
       proof: testProofParams
     })
     assert.deepEqual(challengeRequest.toVerify, [])
