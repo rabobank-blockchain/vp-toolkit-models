@@ -1,5 +1,5 @@
 import { IProofParams, Proof } from './proof';
-import { OrderedModel } from './ordered-model';
+import { FlexibleOrderedModel } from './flexible-ordered-model';
 /**
  * A verifier can specify the allowed issuers and, optionally,
  * Zero Knowledge Proof boundaries per predicate.
@@ -31,6 +31,7 @@ export interface IChallengeRequest {
     toAttest?: IToAttestParams[];
     toVerify?: IToVerifyParams[];
     proof?: IProofParams;
+    postEndpoint: string;
     correspondenceId?: string;
 }
 /**
@@ -45,10 +46,11 @@ export interface IChallengeRequestParams extends IChallengeRequest {
  *
  * Note: This model is not part of the W3C VC standard.
  */
-export declare class ChallengeRequest extends OrderedModel {
+export declare class ChallengeRequest extends FlexibleOrderedModel {
     private readonly _toAttest;
     private readonly _toVerify;
     private readonly _proof;
+    private readonly _postEndpoint;
     private readonly _correspondenceId;
     constructor(obj: IChallengeRequestParams);
     /**
@@ -62,6 +64,14 @@ export declare class ChallengeRequest extends OrderedModel {
      * @return string
      */
     readonly correspondenceId: string;
+    /**
+     * This endpoint is used by the holder app
+     * to send information that is requested
+     * in the ChallengeRequest
+     *
+     * @return string
+     */
+    readonly postEndpoint: string;
     /**
      * The issuer/verifier will attest
      * these predicates to the holder
