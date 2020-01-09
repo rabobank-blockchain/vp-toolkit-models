@@ -16,6 +16,10 @@
       "es2016",
       "dom"
     ],
+    "rootDirs": [
+      "src",
+      "test"
+    ],
     "outDir": "dist",
     "types": [
       "mocha",
