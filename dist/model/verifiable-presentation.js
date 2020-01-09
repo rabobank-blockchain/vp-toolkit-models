@@ -56,7 +56,7 @@ class VerifiablePresentation extends flexible_ordered_model_1.FlexibleOrderedMod
         this._type = obj.type;
         this._verifiableCredential = obj.verifiableCredential.map(vc => {
             // If it is not a VC object, it is a VC-parsed JSON string (which has fields without the _ prefixes)
-          return vc ? vc : new verifiable_credential_1.VerifiableCredential(vc)
+            return vc instanceof verifiable_credential_1.VerifiableCredential ? vc : new verifiable_credential_1.VerifiableCredential(vc)
         });
         this._proof = obj.proof.map(x => new proof_1.Proof(x));
         this._context = obj['@context'];

@@ -44,11 +44,11 @@ export interface IProofParams extends IProof {
  * originating from the ChallengeRequest!
  */
 export declare class Proof extends OrderedModel {
-    private readonly _type;
-    private readonly _created;
-    private readonly _verificationMethod;
-    private readonly _nonce;
-    private _signatureValue;
+  private readonly _type
+  private readonly _created
+  private readonly _verificationMethod
+  private readonly _nonce
+  private _signatureValue
 
   constructor (obj: IProofParams);
 

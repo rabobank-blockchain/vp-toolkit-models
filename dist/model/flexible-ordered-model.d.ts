@@ -26,7 +26,7 @@ import { OrderedModel } from './ordered-model'
  * inherited model definition.
  */
 export declare class FlexibleOrderedModel extends OrderedModel {
-    protected readonly _additionalFields: any;
+  protected readonly _additionalFields: any
 
   constructor (obj: any);
 
@@ -45,14 +45,15 @@ export declare class FlexibleOrderedModel extends OrderedModel {
    * @return object
    */
   toJSON (): object;
-    /**
-     * This method will find all additional fields which are passed to
-     * your constructor, but are not declared in your model definition.
-     * These additional fields will be stored and can be accessed through
-     * yourModel.additionalFields.yourCustomField
-     *
-     * @param constructorParams The constructor params your class received
-     * @param childObject Your model instance that from extends this class
-     */
-    protected initializeAdditionalFields(constructorParams: any, childObject: any): void;
+
+  /**
+   * This method will find all additional fields which are passed to
+   * your constructor, but are not declared in your model definition.
+   * These additional fields will be stored and can be accessed through
+   * yourModel.additionalFields.yourCustomField
+   *
+   * @param constructorParams The constructor params your class received
+   * @param childObject Your model instance that from extends this class
+   */
+  protected initializeAdditionalFields (constructorParams: any, childObject: any): void;
 }

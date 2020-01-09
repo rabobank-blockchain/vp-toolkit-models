@@ -41,8 +41,8 @@ export interface ICredentialStatusParams extends ICredentialStatus {
  * @see https://w3c-ccg.github.io/vc-status-registry/
  */
 export declare class CredentialStatus extends OrderedModel {
-    private readonly _id;
-    private readonly _type;
+  private readonly _id
+  private readonly _type
 
   constructor (obj: ICredentialStatusParams);
 

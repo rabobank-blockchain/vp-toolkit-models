@@ -47,14 +47,14 @@ export interface IVerifiableCredentialParams extends IVerifiableCredential {
  * @see https://w3c.github.io/vc-data-model/#credentials
  */
 export declare class VerifiableCredential extends FlexibleOrderedModel {
-    private readonly _id?;
-    private readonly _type;
-    private readonly _issuer;
-    private readonly _issuanceDate;
-    private readonly _credentialSubject;
-    private readonly _proof;
-    private readonly _credentialStatus;
-    private readonly _context;
+  private readonly _id?
+  private readonly _type
+  private readonly _issuer
+  private readonly _issuanceDate
+  private readonly _credentialSubject
+  private readonly _proof
+  private readonly _credentialStatus
+  private readonly _context
 
   constructor (obj: IVerifiableCredentialParams);
 
