@@ -1,4 +1,21 @@
-import { OrderedModel } from './ordered-model';
+/*
+ * Copyright 2020 Coöperatieve Rabobank U.A.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { OrderedModel } from './ordered-model'
+
 /**
  * This super class keeps track of all
  * additional fields which are not defined
@@ -10,21 +27,24 @@ import { OrderedModel } from './ordered-model';
  */
 export declare class FlexibleOrderedModel extends OrderedModel {
     protected readonly _additionalFields: any;
-    constructor(obj: any);
-    /**
-     * This property will return all
-     * fields as key-value pairs.
-     * @return any
-     */
-    readonly additionalFields: any;
-    /**
-     * Converts this object to a json string
-     * using the exact same field order as it
-     * was constructed, including the additional
-     * fields.
-     * @return object
-     */
-    toJSON(): object;
+
+  constructor (obj: any);
+
+  /**
+   * This property will return all
+   * fields as key-value pairs.
+   * @return any
+   */
+  get additionalFields (): any;
+
+  /**
+   * Converts this object to a json string
+   * using the exact same field order as it
+   * was constructed, including the additional
+   * fields.
+   * @return object
+   */
+  toJSON (): object;
     /**
      * This method will find all additional fields which are passed to
      * your constructor, but are not declared in your model definition.
