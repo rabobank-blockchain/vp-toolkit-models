@@ -65,7 +65,7 @@ export class VerifiablePresentation extends FlexibleOrderedModel {
     this._type = obj.type
     this._verifiableCredential = obj.verifiableCredential.map(vc => {
       // If it is not a VC object, it is a VC-parsed JSON string (which has fields without the _ prefixes)
-      return vc instanceof VerifiableCredential ? vc : new VerifiableCredential(vc)
+      return vc ? vc : new VerifiableCredential(vc)
     })
     this._proof = obj.proof.map(x => new Proof(x))
     this._context = obj['@context']
