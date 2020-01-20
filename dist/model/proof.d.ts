@@ -44,14 +44,6 @@ export interface IProofParams extends IProof {
  * originating from the ChallengeRequest!
  */
 export declare class Proof extends OrderedModel {
-  private readonly _type
-  private readonly _created
-  private readonly _verificationMethod
-  private readonly _nonce
-  private _signatureValue
-
-  constructor (obj: IProofParams);
-
   /**
    * The nonce in uuidv4 format
    *
@@ -61,34 +53,36 @@ export declare class Proof extends OrderedModel {
    * exchange of credentials.
    * @return string
    */
-  get nonce (): string;
-
+  readonly nonce: string
   /**
    * The name of the signature type
    * @return string
    */
-  get type (): string;
-
+  readonly type: string
   /**
    * The Created date in a ISO 8601 format
    * @return string
    */
-  get created (): string;
-
+  readonly created: string
   /**
    * The verification method to verify the signature
    * can be an url, public key, DID, etc.
    * @return string
    */
-  get verificationMethod (): string;
-
+  readonly verificationMethod: string
   /**
    * The signature value
    * @return string|undefined
    */
-  get signatureValue (): string | undefined;
   /**
    * Set the signature value
    */
-  set signatureValue (value: string | undefined);
+  signatureValue: string | undefined
+  private readonly _type
+  private readonly _created
+  private readonly _verificationMethod
+  private readonly _nonce
+  private _signatureValue
+
+  constructor (obj: IProofParams);
 }

@@ -70,7 +70,6 @@ export declare class ChallengeRequest extends FlexibleOrderedModel {
     private readonly _postEndpoint;
     private readonly _correspondenceId;
     constructor(obj: IChallengeRequestParams);
-
     /**
      * This is the correspondence ID which will
      * be used in the VP proof (nonce field)
@@ -81,8 +80,7 @@ export declare class ChallengeRequest extends FlexibleOrderedModel {
      * random uuid will be used.
      * @return string
      */
-    get correspondenceId (): string;
-
+    readonly correspondenceId: string
     /**
      * This endpoint is used by the holder app
      * to send information that is requested
@@ -90,28 +88,25 @@ export declare class ChallengeRequest extends FlexibleOrderedModel {
      *
      * @return string
      */
-    get postEndpoint (): string;
-
+    readonly postEndpoint: string
     /**
      * The issuer/verifier will attest
      * these predicates to the holder
      * This array can be empty
      * @return IToAttestParams[]
      */
-    get toAttest (): IToAttestParams[];
-
+    readonly toAttest: IToAttestParams[]
     /**
      * The verifier asks the holder to provide DIDs
      * for the given context URL's (like schema.org)
      * This is optional
      * @return IToVerifyParams[]
      */
-    get toVerify (): IToVerifyParams[];
-
+    readonly toVerify: IToVerifyParams[]
     /**
      * The proof to ensure the integrity
      * and verifiability of the this object
      * @return Proof
      */
-    get proof (): Proof;
+    readonly proof: Proof
 }
