@@ -41,22 +41,20 @@ export interface ICredentialStatusParams extends ICredentialStatus {
  * @see https://w3c-ccg.github.io/vc-status-registry/
  */
 export declare class CredentialStatus extends OrderedModel {
-  private readonly _id
-  private readonly _type
-
-  constructor (obj: ICredentialStatusParams);
-
   /**
    * The name of the credential status type
    * @return string
    */
-  get type (): string;
-
+  readonly type: string
   /**
    * The ID which can be consulted according to the type
    * According to the spec this must be an URL, but we can
    * also use it to refer to a blockchain contract address
    * @return string
    */
-  get id (): string;
+  readonly id: string
+  private readonly _id
+  private readonly _type
+
+  constructor (obj: ICredentialStatusParams);
 }

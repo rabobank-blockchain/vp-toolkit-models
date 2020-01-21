@@ -26,16 +26,15 @@ import { OrderedModel } from './ordered-model'
  * inherited model definition.
  */
 export declare class FlexibleOrderedModel extends OrderedModel {
-  protected readonly _additionalFields: any
-
-  constructor (obj: any);
-
   /**
    * This property will return all
    * fields as key-value pairs.
    * @return any
    */
-  get additionalFields (): any;
+  readonly additionalFields: any
+  protected readonly _additionalFields: any
+
+  constructor (obj: any);
 
   /**
    * Converts this object to a json string
