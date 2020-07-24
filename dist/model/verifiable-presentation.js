@@ -1,19 +1,3 @@
-/*
- * Copyright 2020 Coöperatieve Rabobank U.A.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 "use strict";
 /*
  * Copyright 2020 Coöperatieve Rabobank U.A.
@@ -56,7 +40,7 @@ class VerifiablePresentation extends flexible_ordered_model_1.FlexibleOrderedMod
         this._type = obj.type;
         this._verifiableCredential = obj.verifiableCredential.map(vc => {
             // If it is not a VC object, it is a VC-parsed JSON string (which has fields without the _ prefixes)
-            return vc instanceof verifiable_credential_1.VerifiableCredential ? vc : new verifiable_credential_1.VerifiableCredential(vc)
+            return vc instanceof verifiable_credential_1.VerifiableCredential ? vc : new verifiable_credential_1.VerifiableCredential(vc);
         });
         this._proof = obj.proof.map(x => new proof_1.Proof(x));
         this._context = obj['@context'];
