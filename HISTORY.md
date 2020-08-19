@@ -10,7 +10,12 @@
 - `IVerifiableCredentialParams.proof` is now required (was optional before)
 - The `type` field in `IVerifiableCredentialParams` was of type `string`, but is now `string | string[]`
 - `Proof` was too tightly coupled with the secp256k1 proof structure. `Proof` is now `BaseProof` which only requires a `type` field and the rest is dynamic
-- In your code, please rename your `Proof` import to `Secp256k1Proof` to continue using the same structure
+
+*Migration steps:*
+- Rename your `Proof` import to `Secp256k1Proof`
+- Use `verifiableCredential.typeAsArray()` instead of `verifiableCredential.type` to retrieve the type as an array
+- Unrecognized fields (like `verificationMethod` and `created`) can be found in `proof.additionalFields`
+- To make use of proper typehinting (without relying on `additionalFields`), [cast the proof to the correct type](README.md#proofs)
 
 **Enhancements**
 - The `I....Params` interfaces now define a minimum set of required fields, but are not restricted to those fields only.
