@@ -15,15 +15,15 @@
  */
 
 import { v4 as uuid } from 'uuid'
-import { IProofParams, Proof } from './proof'
 import { Expose, Transform } from 'class-transformer'
 import { FlexibleOrderedModel } from './flexible-ordered-model'
+import { BaseProof, IBaseProofParams } from './proofs/base-proof'
 
 /**
  * A verifier can specify the allowed issuers and, optionally,
  * Zero Knowledge Proof boundaries per predicate.
  */
-export interface IToVerifyParams {
+export interface IToVerifyParams extends Record<string, any> { // Basically extends 'any'
   predicate: string, // For example, 'http://schema.org/baseSalary'
   allowedIssuers?: string[], // A collection of DID's. Can be empty/undefined to allow all.
   // lowerBound and upperBound are used for ZK proofs. Here an example to prove income between 0 - 1000000
@@ -37,32 +37,21 @@ export interface IToVerifyParams {
  * add more metadata or constraints for each predicate in
  * the future.
  */
-export interface IToAttestParams {
+export interface IToAttestParams extends Record<string, any> { // Basically extends 'any'
   predicate: string // For example, 'http://schema.org/givenName'
 }
 
 /**
  * This interface declares the parameters needed to construct a
- * ChallengeRequest. This interface does not specify the structure
- * of a ChallengeRequest. Due to unclarities, this interface will
- * be renamed to IProofParams.
+ * ChallengeRequest.
  *
- * @deprecated Will be removed in v0.2, use IChallengeRequestParams instead
  */
-export interface IChallengeRequest {
+export interface IChallengeRequestParams {
   toAttest?: IToAttestParams[]
   toVerify?: IToVerifyParams[]
-  proof?: IProofParams
+  proof?: IBaseProofParams
   postEndpoint: string
   correspondenceId?: string
-}
-
-/**
- * Declares the needed parameters
- * to construct a ChallengeRequest
- */
-// tslint:disable-next-line
-export interface IChallengeRequestParams extends IChallengeRequest {
 }
 
 /**
@@ -74,7 +63,7 @@ export interface IChallengeRequestParams extends IChallengeRequest {
 export class ChallengeRequest extends FlexibleOrderedModel {
   private readonly _toAttest: IToAttestParams[]
   private readonly _toVerify: IToVerifyParams[]
-  private readonly _proof: Proof
+  private readonly _proof: BaseProof
   private readonly _postEndpoint: string
   private readonly _correspondenceId: string
 
@@ -86,7 +75,7 @@ export class ChallengeRequest extends FlexibleOrderedModel {
 
     this._toAttest = obj.toAttest || []
     this._toVerify = obj.toVerify || []
-    this._proof = new Proof(obj.proof)
+    this._proof = obj.proof instanceof BaseProof ? obj.proof : new BaseProof(obj.proof)
     this._postEndpoint = obj.postEndpoint
     this._correspondenceId = obj.correspondenceId || uuid()
   }
@@ -146,8 +135,8 @@ export class ChallengeRequest extends FlexibleOrderedModel {
    * @return Proof
    */
   @Expose()
-  @Transform((proof: Proof) => proof.toJSON())
-  get proof (): Proof {
+  @Transform((proof: BaseProof) => proof.toJSON())
+  public get proof (): BaseProof {
     return this._proof
   }
 }

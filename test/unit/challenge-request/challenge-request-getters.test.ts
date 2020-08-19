@@ -15,7 +15,7 @@
  */
 
 import { assert } from 'chai'
-import { ChallengeRequest, Proof } from '../../../src'
+import { BaseProof, ChallengeRequest } from '../../../src'
 import { challengeRequestTestData, testProofParams } from '../test-helper'
 
 describe('challenge request getters', function () {
@@ -91,6 +91,6 @@ describe('challenge request getters', function () {
   })
 
   it('should return an unchanged proof value', () => {
-    assert.deepEqual(sut.proof, new Proof(testProofParams))
+    assert.deepEqual(sut.proof, new BaseProof(testProofParams))
   })
 })

@@ -31,37 +31,40 @@
  * limitations under the License.
  */
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const proof_1 = require("./proof");
-const verifiable_credential_1 = require("./verifiable-credential");
-const class_transformer_1 = require("class-transformer");
-const flexible_ordered_model_1 = require("./flexible-ordered-model");
+  var c = arguments.length,
+    r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d
+  if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc)
+  else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r
+  return c > 3 && r && Object.defineProperty(target, key, r), r
+}
+Object.defineProperty(exports, "__esModule", {value: true})
+exports.VerifiablePresentation = void 0
+const verifiable_credential_1 = require("./verifiable-credential")
+const class_transformer_1 = require("class-transformer")
+const flexible_ordered_model_1 = require("./flexible-ordered-model")
+const base_proof_1 = require("./proofs/base-proof")
+
 /**
  * W3C Verifiable Presentation model (VP)
  * @see https://w3c.github.io/vc-data-model/#presentations-0
  */
 class VerifiablePresentation extends flexible_ordered_model_1.FlexibleOrderedModel {
-    constructor(obj) {
-        if (!obj.type || obj.type.length === 0 || obj.type.join().length === obj.type.length - 1
-            || !obj.verifiableCredential || obj.verifiableCredential.length === 0 || !obj.proof) {
-            throw new ReferenceError('One or more fields are empty');
-        }
-        super(obj);
-        this._id = obj.id;
-        this._type = obj.type;
-        this._verifiableCredential = obj.verifiableCredential.map(vc => {
-            // If it is not a VC object, it is a VC-parsed JSON string (which has fields without the _ prefixes)
-            return vc instanceof verifiable_credential_1.VerifiableCredential ? vc : new verifiable_credential_1.VerifiableCredential(vc)
-        });
-        this._proof = obj.proof.map(x => new proof_1.Proof(x));
-        this._context = obj['@context'];
-        this.initializeAdditionalFields(obj, this);
+  constructor(obj) {
+    if (!obj.type || obj.type.length === 0 || obj.type.join().length === obj.type.length - 1
+      || !obj.verifiableCredential || obj.verifiableCredential.length === 0 || !obj.proof) {
+      throw new ReferenceError('One or more fields are empty')
     }
+    super(obj)
+    this._id = obj.id
+    this._type = obj.type
+    this._verifiableCredential = obj.verifiableCredential.map(vc => {
+      // If it is not a VC object, it is a VC-parsed JSON string (which has fields without the _ prefixes)
+      return vc instanceof verifiable_credential_1.VerifiableCredential ? vc : new verifiable_credential_1.VerifiableCredential(vc)
+    })
+    this._proof = obj.proof.map(x => x instanceof base_proof_1.BaseProof ? x : new base_proof_1.BaseProof(x))
+    this._context = obj['@context']
+    this.initializeAdditionalFields(obj, this)
+  }
     /**
      * Get the identifier for this VP
      *
@@ -78,30 +81,33 @@ class VerifiablePresentation extends flexible_ordered_model_1.FlexibleOrderedMod
      * @return string[]
      */
     get type() {
-        return this._type;
+      return this._type
     }
-    /**
-     * The verifiable credentials
-     * @return VerifiableCredential[]
-     */
-    get verifiableCredential() {
-        return this._verifiableCredential;
-    }
-    /**
-     * The associated proof(s) from the sender,
-     * proving the ownership of the VC ID's
-     * @return Proof[]
-     */
-    get proof() {
-        return this._proof;
-    }
-    /**
-     * The context for the verifiable presentation
-     * @return string[]|undefined
-     */
-    get context() {
-        return this._context;
-    }
+
+  /**
+   * The verifiable credentials
+   * @return VerifiableCredential[]
+   */
+  get verifiableCredential() {
+    return this._verifiableCredential
+  }
+
+  /**
+   * The associated proof(s) from the sender,
+   * proving the ownership of the VC ID's
+   * @return IBaseProof[]
+   */
+  get proof() {
+    return this._proof
+  }
+
+  /**
+   * The context for the verifiable presentation
+   * @return string[]|undefined
+   */
+  get context() {
+    return this._context
+  }
     /**
      * The context for the verifiable presentation
      * @return string[]|undefined

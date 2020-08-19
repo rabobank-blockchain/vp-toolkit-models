@@ -15,98 +15,27 @@
  */
 
 import { assert } from 'chai'
-import { IVerifiableCredentialParams, VerifiableCredential } from '../../../src'
+import { FlexibleOrderedModel, VerifiableCredential } from '../../../src'
 import { testCredentialParams } from '../test-helper'
 
 describe('verifiable credential constructor', function () {
-  it('should not accept empty type array', () => {
-    const createSut = () => {
-      return new VerifiableCredential({
-        id: testCredentialParams.id,
-        type: [],
-        issuer: testCredentialParams.issuer,
-        issuanceDate: testCredentialParams.issuanceDate,
-        credentialSubject: testCredentialParams.credentialSubject,
-        proof: testCredentialParams.proof
-      })
-    }
+  it('should inherit FlexibleOrderedModel to use field validation', () => {
+    const sut = new VerifiableCredential({
+      id: testCredentialParams.id,
+      type: testCredentialParams.type,
+      issuer: testCredentialParams.issuer,
+      issuanceDate: testCredentialParams.issuanceDate,
+      credentialSubject: testCredentialParams.credentialSubject,
+      proof: testCredentialParams.proof,
+      credentialStatus: testCredentialParams.credentialStatus,
+      '@context': testCredentialParams['@context']
+    })
 
-    assert.throws(createSut, ReferenceError, 'One or more fields are empty')
+    assert.instanceOf<FlexibleOrderedModel>(sut, VerifiableCredential)
   })
 
-  it('should not accept type array with one empty string', () => {
-    const createSut = () => {
-      return new VerifiableCredential({
-        id: testCredentialParams.id,
-        type: [''],
-        issuer: testCredentialParams.issuer,
-        issuanceDate: testCredentialParams.issuanceDate,
-        credentialSubject: testCredentialParams.credentialSubject,
-        proof: testCredentialParams.proof
-      })
-    }
-
-    assert.throws(createSut, ReferenceError, 'One or more fields are empty')
-  })
-
-  it('should not accept type array with multiple empty strings', () => {
-    const createSut = () => {
-      return new VerifiableCredential({
-        id: testCredentialParams.id,
-        type: ['', '', ''],
-        issuer: testCredentialParams.issuer,
-        issuanceDate: testCredentialParams.issuanceDate,
-        credentialSubject: testCredentialParams.credentialSubject,
-        proof: testCredentialParams.proof
-      })
-    }
-
-    assert.throws(createSut, ReferenceError, 'One or more fields are empty')
-  })
-
-  it('should not accept empty issuer field', () => {
-    const createSut = () => {
-      return new VerifiableCredential({
-        id: testCredentialParams.id,
-        type: testCredentialParams.type,
-        issuer: '',
-        issuanceDate: testCredentialParams.issuanceDate,
-        credentialSubject: testCredentialParams.credentialSubject,
-        proof: testCredentialParams.proof
-      })
-    }
-
-    assert.throws(createSut, ReferenceError, 'One or more fields are empty')
-  })
-
-  it('should not accept null credentialSubject field', () => {
-    const createSut = () => {
-      return new VerifiableCredential({
-        id: testCredentialParams.id,
-        type: testCredentialParams.type,
-        issuer: testCredentialParams.issuer,
-        issuanceDate: testCredentialParams.issuanceDate,
-        credentialSubject: null,
-        proof: testCredentialParams.proof
-      })
-    }
-
-    assert.throws(createSut, ReferenceError, 'One or more fields are empty')
-  })
-
-  it('should not throw on minimum amount of valid inputs', () => {
-    const createSut = () => {
-      return new VerifiableCredential({
-        id: testCredentialParams.id,
-        type: testCredentialParams.type,
-        issuer: testCredentialParams.issuer,
-        issuanceDate: testCredentialParams.issuanceDate,
-        credentialSubject: testCredentialParams.credentialSubject,
-        proof: testCredentialParams.proof
-      })
-    }
-
-    assert.doesNotThrow(createSut)
+  it('should not accept empty or missing fields "type", "issuer", "issuanceDate", "credentialSubject" and "proof"', () => {
+    assert.deepEqual(VerifiableCredential.nonEmptyFields, ['type', 'issuer', 'issuanceDate', 'credentialSubject', 'proof'])
   })
 
   it('should not throw on all valid inputs', () => {
@@ -137,7 +66,7 @@ describe('verifiable credential constructor', function () {
       credentialStatus: testCredentialParams.credentialStatus,
       '@context': testCredentialParams['@context'],
       'optionalField': 12345
-    } as IVerifiableCredentialParams)
+    })
 
     const sut1Parsed = JSON.parse(JSON.stringify(sut1))
     const sut2 = new VerifiableCredential(sut1Parsed)

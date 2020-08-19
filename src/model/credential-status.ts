@@ -18,24 +18,12 @@ import { Expose } from 'class-transformer'
 import { OrderedModel } from './ordered-model'
 
 /**
- * This interface declares the parameters needed to construct a
- * CredentialStatus. This interface does not specify the structure
- * of a CredentialStatus. Due to unclarities, this interface will
- * be renamed to ICredentialStatusParams.
- *
- * @deprecated Will be removed in v0.2, use ICredentialStatusParams instead
- */
-export interface ICredentialStatus {
-  id: string
-  type: string
-}
-
-/**
- * Declares the needed parameters
+ * This interface declares the parameters needed
  * to construct a CredentialStatus
  */
-// tslint:disable-next-line
-export interface ICredentialStatusParams extends ICredentialStatus {
+export interface ICredentialStatusParams extends Record<string, any> { // Basically extends 'any'
+  id: string
+  type: string
 }
 
 /**

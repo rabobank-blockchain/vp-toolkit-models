@@ -14,36 +14,48 @@
  * limitations under the License.
  */
 
-import { OrderedModel } from './ordered-model'
+import { BaseProof, IBaseProofParams } from './base-proof'
 
 /**
- * This interface declares the parameters needed to construct a
- * Proof. This interface does not specify the structure of
- * a Proof. Due to unclarities, this interface will be
- * renamed to IProofParams.
- *
- * @deprecated Will be removed in v0.2, use IProofParams instead
+ * This interface declares the parameters
+ * needed to construct a Secp256k1 Proof.
  */
-export interface IProof {
-    type: string;
+export interface ISecp256k1ProofParams extends IBaseProofParams {
     created: Date;
     verificationMethod: string;
     nonce?: string;
     signatureValue?: string | undefined;
 }
+
 /**
- * Declares the needed parameters
- * to construct a Proof
+ * Secp256k1 Proof model
  */
-export interface IProofParams extends IProof {
-}
-/**
- * JSON-LD Proof model
- *
- * The nonce can be a correspondenceId
- * originating from the ChallengeRequest!
- */
-export declare class Proof extends OrderedModel {
+export declare class Secp256k1Proof extends BaseProof {
+    /**
+     * These fields must be present and not empty
+     * when constructing this class.
+     */
+    static nonEmptyFields: string[]
+    static supportsType: string
+    private readonly _created
+    private readonly _verificationMethod
+    private readonly _nonce
+
+    constructor (obj: ISecp256k1ProofParams);
+
+    private _signatureValue
+
+    /**
+     * The signature value
+     * @return string|undefined
+     */
+    get signatureValue (): string | undefined;
+
+    /**
+     * Set the signature value
+     */
+    set signatureValue (value: string | undefined);
+
     /**
      * The nonce in uuidv4 format
      *
@@ -53,36 +65,25 @@ export declare class Proof extends OrderedModel {
      * exchange of credentials.
      * @return string
      */
-    readonly nonce: string
-    /**
-     * The name of the signature type
-     * @return string
-     */
-    readonly type: string
+    get nonce (): string;
+
     /**
      * The Created date in a ISO 8601 format
      * @return string
      */
-    readonly created: string
+    get created (): string;
+
     /**
      * The verification method to verify the signature
      * can be an url, public key, DID, etc.
      * @return string
      */
-    readonly verificationMethod: string
-    /**
-     * The signature value
-     * @return string|undefined
-     */
-    /**
-     * Set the signature value
-     */
-    signatureValue: string | undefined
-    private readonly _type
-    private readonly _created
-    private readonly _verificationMethod
-    private readonly _nonce
-    private _signatureValue
+    get verificationMethod (): string;
 
-    constructor (obj: IProofParams);
+    /**
+     * Cast a BaseProof object to this object
+     * @param {BaseProof} t
+     * @return {this}
+     */
+    static cast (t: BaseProof): Secp256k1Proof;
 }

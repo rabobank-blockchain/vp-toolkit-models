@@ -30,8 +30,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-const class_transformer_1 = require("class-transformer");
+Object.defineProperty(exports, "__esModule", {value: true})
+exports.OrderedModel = void 0
+const class_transformer_1 = require("class-transformer")
+
 /**
  * This super class provides a function
  * to maintain the same order of fields

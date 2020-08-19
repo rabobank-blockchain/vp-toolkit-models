@@ -15,7 +15,7 @@
  */
 
 import { assert } from 'chai'
-import { IVerifiablePresentationParams, VerifiablePresentation } from '../../../src'
+import { VerifiablePresentation } from '../../../src'
 import { testVp } from '../test-helper'
 
 describe('verifiable presentation field ordering, stringify and parse', function () {
@@ -58,10 +58,10 @@ describe('verifiable presentation field ordering, stringify and parse', function
       verifiableCredential: testVp.verifiableCredential,
       proof: testVp.proof,
       '@context': testVp['@context']
-    } as IVerifiablePresentationParams)
+    })
 
     const strObj = JSON.stringify(sut1.toJSON())
     const obj = JSON.parse(strObj)
-    assert.equal(strObj, `{"id":"urn:uuid:3978344f-8596-4c3a-a978-8fcaba3903c5","type":["VerifiablePresentation"],"randomTestField":"abc","verifiableCredential":[{"id":"did:protocol:address","type":["VerifiableCredential"],"issuer":"did:protocol:issueraddress","issuanceDate":"${obj.verifiableCredential[0].issuanceDate}","credentialSubject":{"id":"did:protocol:holderaddress","type":"John"},"proof":{"type":"SignatureAlgorithmName","created":"${obj.verifiableCredential[0].proof.created}","verificationMethod":"verification method","nonce":"${obj.verifiableCredential[0].proof.nonce}"},"credentialStatus":{"type":"vcStatusRegistry2019","id":"0x6AbAAFB672f60C16C604A29426aDA1Af9d96d440"},"optionalField":"optionalContent","@context":["https://www.w3.org/2018/credentials/v1","https://schema.org/givenName"]}],"proof":[{"type":"SignatureAlgorithmName","created":"${obj.proof[0].created}","verificationMethod":"verification method","nonce":"${obj.proof[0].nonce}"}]}`)
+    assert.equal(strObj, `{"id":"urn:uuid:3978344f-8596-4c3a-a978-8fcaba3903c5","type":["VerifiablePresentation"],"randomTestField":"abc","verifiableCredential":[{"id":"did:protocol:address","type":["VerifiableCredential"],"issuer":"did:protocol:issueraddress","issuanceDate":"${obj.verifiableCredential[0].issuanceDate}","credentialSubject":{"id":"did:protocol:holderaddress","type":"John"},"proof":{"type":"SignatureAlgorithmName","created":"${obj.verifiableCredential[0].proof.created}","verificationMethod":"verification method X","nonce":"${obj.verifiableCredential[0].proof.nonce}"},"credentialStatus":{"type":"vcStatusRegistry2019","id":"0x6AbAAFB672f60C16C604A29426aDA1Af9d96d440"},"optionalField":"optionalContent","@context":["https://www.w3.org/2018/credentials/v1","https://schema.org/givenName"]}],"proof":[{"type":"SignatureAlgorithmName","created":"${obj.proof[0].created}","verificationMethod":"verification method","nonce":"${obj.proof[0].nonce}"}]}`)
   })
 })

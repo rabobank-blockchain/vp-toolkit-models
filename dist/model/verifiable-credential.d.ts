@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IProofParams, Proof } from './proof'
+import { BaseProof, IBaseProofParams } from './proofs/base-proof'
 import { CredentialStatus, ICredentialStatusParams } from './credential-status'
 import { FlexibleOrderedModel } from './flexible-ordered-model'
 
@@ -23,88 +23,28 @@ import { FlexibleOrderedModel } from './flexible-ordered-model'
  * VerifiableCredential. This interface does not specify the structure of
  * a VerifiableCredential. Due to unclarities, this interface will be
  * renamed to IVerifiableCredentialParams.
- *
- * @deprecated Will be removed in v0.2, use IVerifiableCredentialParams instead
  */
-export interface IVerifiableCredential {
+export interface IVerifiableCredentialParams extends Record<string, any> {
     id?: string;
-    type: string[];
+    type: string | string[];
     issuer: string;
     issuanceDate: Date;
     credentialSubject: any;
-    proof?: IProofParams;
+    proof: IBaseProofParams;
     credentialStatus?: ICredentialStatusParams;
     '@context'?: string[];
 }
-/**
- * Declares the needed parameters
- * to construct a VerifiableCredential
- */
-export interface IVerifiableCredentialParams extends IVerifiableCredential {
-}
+
 /**
  * W3C Verifiable Credential model (VC)
  * @see https://w3c.github.io/vc-data-model/#credentials
  */
 export declare class VerifiableCredential extends FlexibleOrderedModel {
     /**
-     * The context for this VC, used to give
-     * context to the credentialsubject values
-     * Is optional, so can be null
-     * @return string[]|undefined
+     * These fields must be present and not empty
+     * when constructing this class.
      */
-    readonly context: string[] | undefined
-    /**
-     * The context for this VC, used to give
-     * context to the credentialsubject values
-     * Is optional, so can be null
-     * @return string[]|undefined
-     */
-    readonly '@context': string[] | undefined
-    /**
-     * An identifier for this VC
-     *
-     * According to the standard, an
-     * ID may be omitted
-     * @see https://w3c.github.io/vc-data-model/#identifiers
-     * @return string|undefined
-     */
-    readonly id: string | undefined
-    /**
-     * The VC type
-     * @return string[]
-     */
-    readonly type: string[]
-    /**
-     * The issuer ID
-     * @return string
-     */
-    readonly issuer: string
-    /**
-     * The issuance date in a ISO 8601 format
-     * @return string
-     */
-    readonly issuanceDate: string
-    /**
-     * The collection of claims
-     * The credentialSubject may contain an 'id' field,
-     * but it is not mandatory
-     * @see https://w3c.github.io/vc-data-model/#subject
-     * @return any
-     */
-    readonly credentialSubject: any
-    /**
-     * The proof for this VC
-     * @return Proof
-     */
-    readonly proof: Proof
-    /**
-     * The credential status
-     * Is optional, so can be null
-     * @see CredentialStatus
-     * @return CredentialStatus|undefined
-     */
-    readonly credentialStatus: CredentialStatus | undefined
+    static nonEmptyFields: string[]
     private readonly _id?
     private readonly _type
     private readonly _issuer
@@ -115,4 +55,79 @@ export declare class VerifiableCredential extends FlexibleOrderedModel {
     private readonly _context
 
     constructor (obj: IVerifiableCredentialParams);
+
+    /**
+     * The context for this VC, used to give
+     * context to the credentialsubject values
+     * Is optional, so can be null
+     * @return string[]|undefined
+     */
+    get context (): string[] | undefined;
+
+    /**
+     * The context for this VC, used to give
+     * context to the credentialsubject values
+     * Is optional, so can be null
+     * @return string[]|undefined
+     */
+    get '@context' (): string[] | undefined;
+
+    /**
+     * An identifier for this VC
+     *
+     * According to the standard, an
+     * ID may be omitted
+     * @see https://w3c.github.io/vc-data-model/#identifiers
+     * @return string|undefined
+     */
+    get id (): string | undefined;
+
+    /**
+     * The VC type
+     * @return {string | string[]}
+     */
+    get type (): string | string[];
+
+    /**
+     * The issuer ID
+     * @return string
+     */
+    get issuer (): string;
+
+    /**
+     * The issuance date in a ISO 8601 format
+     * @return string
+     */
+    get issuanceDate (): string;
+
+    /**
+     * The collection of claims
+     * The credentialSubject may contain an 'id' field,
+     * but it is not mandatory
+     * @see https://w3c.github.io/vc-data-model/#subject
+     * @return any
+     */
+    get credentialSubject (): any;
+
+    /**
+     * The proof for this VC
+     * @return BaseProof
+     */
+    get proof (): BaseProof;
+
+    /**
+     * The credential status
+     * Is optional, so can be null
+     * @see CredentialStatus
+     * @return CredentialStatus|undefined
+     */
+    get credentialStatus (): CredentialStatus | undefined;
+
+    /**
+     * Sometimes the Type can be of type string
+     * instead of an array. This method always returns
+     * the type as an array.
+     * @return string[]
+     */
+    typeAsArray (): string[];
 }

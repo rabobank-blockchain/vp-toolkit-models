@@ -15,7 +15,7 @@
  */
 
 import { assert } from 'chai'
-import { IVerifiablePresentationParams, Proof, VerifiablePresentation } from '../../../src'
+import { BaseProof, IVerifiablePresentationParams, VerifiablePresentation } from '../../../src'
 import { verifiablePresentationTestData } from '../test-helper'
 
 describe('verfiable presentation getters', function () {
@@ -36,7 +36,7 @@ describe('verfiable presentation getters', function () {
   })
 
   it('should return an unchanged proof', () => {
-    assert.deepStrictEqual(sut.proof, verifiablePresentationTestData.proof.map(x => new Proof(x)))
+    assert.deepStrictEqual(sut.proof, verifiablePresentationTestData.proof.map(x => new BaseProof(x)))
   })
 
   it('should return an unchanged verifiable credential', () => {

@@ -16,18 +16,13 @@
 
 import { v4 as uuid } from 'uuid'
 import { Expose } from 'class-transformer'
-import { OrderedModel } from './ordered-model'
+import { BaseProof, IBaseProofParams } from './base-proof'
 
 /**
- * This interface declares the parameters needed to construct a
- * Proof. This interface does not specify the structure of
- * a Proof. Due to unclarities, this interface will be
- * renamed to IProofParams.
- *
- * @deprecated Will be removed in v0.2, use IProofParams instead
+ * This interface declares the parameters
+ * needed to construct a Secp256k1 Proof.
  */
-export interface IProof {
-  type: string
+export interface ISecp256k1ProofParams extends IBaseProofParams {
   created: Date
   verificationMethod: string
   nonce?: string
@@ -35,37 +30,31 @@ export interface IProof {
 }
 
 /**
- * Declares the needed parameters
- * to construct a Proof
+ * Secp256k1 Proof model
  */
-// tslint:disable-next-line
-export interface IProofParams extends IProof {
-}
-
-/**
- * JSON-LD Proof model
- *
- * The nonce can be a correspondenceId
- * originating from the ChallengeRequest!
- */
-export class Proof extends OrderedModel {
-  private readonly _type: string
+export class Secp256k1Proof extends BaseProof {
   private readonly _created: Date
   private readonly _verificationMethod: string
   private readonly _nonce: string
   private _signatureValue: string | undefined
 
-  constructor (obj: IProofParams) {
-    if (!obj.type || !obj.created || !obj.verificationMethod) {
-      throw new ReferenceError('One or more fields are empty')
-    }
-    super(obj)
+  /**
+   * These fields must be present and not empty
+   * when constructing this class.
+   */
+  public static nonEmptyFields = ['created', 'verificationMethod']
+  public static supportsType = 'Secp256k1Signature2019'
 
-    this._type = obj.type
+  constructor (obj: ISecp256k1ProofParams) {
+    super(obj, Secp256k1Proof.nonEmptyFields)
+
+    // Proof type is set in BaseProof
     this._created = new Date(obj.created)
     this._verificationMethod = obj.verificationMethod
     this._nonce = obj.nonce || uuid()
     this._signatureValue = obj.signatureValue
+
+    this.initializeAdditionalFields(obj, this)
   }
 
   /**
@@ -80,15 +69,6 @@ export class Proof extends OrderedModel {
   @Expose()
   public get nonce (): string {
     return this._nonce
-  }
-
-  /**
-   * The name of the signature type
-   * @return string
-   */
-  @Expose()
-  public get type (): string {
-    return this._type
   }
 
   /**
@@ -124,5 +104,14 @@ export class Proof extends OrderedModel {
    */
   public set signatureValue (value: string | undefined) {
     this._signatureValue = value
+  }
+
+  /**
+   * Cast a BaseProof object to this object
+   * @param {BaseProof} t
+   * @return {this}
+   */
+  public static cast (t: BaseProof): Secp256k1Proof {
+    return new Secp256k1Proof(t.toJSON() as ISecp256k1ProofParams)
   }
 }

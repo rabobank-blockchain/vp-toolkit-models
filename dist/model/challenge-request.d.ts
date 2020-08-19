@@ -14,48 +14,41 @@
  * limitations under the License.
  */
 
-import { IProofParams, Proof } from './proof'
 import { FlexibleOrderedModel } from './flexible-ordered-model'
+import { BaseProof, IBaseProofParams } from './proofs/base-proof'
 
 /**
  * A verifier can specify the allowed issuers and, optionally,
  * Zero Knowledge Proof boundaries per predicate.
  */
-export interface IToVerifyParams {
+export interface IToVerifyParams extends Record<string, any> {
     predicate: string;
     allowedIssuers?: string[];
     lowerBound?: number;
     upperBound?: number;
 }
+
 /**
  * The issuer specifies which predicates will be issued.
  * This interface provides flexibility for the issuer to
  * add more metadata or constraints for each predicate in
  * the future.
  */
-export interface IToAttestParams {
+export interface IToAttestParams extends Record<string, any> {
     predicate: string;
 }
+
 /**
  * This interface declares the parameters needed to construct a
- * ChallengeRequest. This interface does not specify the structure
- * of a ChallengeRequest. Due to unclarities, this interface will
- * be renamed to IProofParams.
+ * ChallengeRequest.
  *
- * @deprecated Will be removed in v0.2, use IChallengeRequestParams instead
  */
-export interface IChallengeRequest {
+export interface IChallengeRequestParams {
     toAttest?: IToAttestParams[];
     toVerify?: IToVerifyParams[];
-    proof?: IProofParams;
+    proof?: IBaseProofParams;
     postEndpoint: string;
     correspondenceId?: string;
-}
-/**
- * Declares the needed parameters
- * to construct a ChallengeRequest
- */
-export interface IChallengeRequestParams extends IChallengeRequest {
 }
 /**
  * Challenge Request model that enables an issuer/verifier
@@ -70,6 +63,7 @@ export declare class ChallengeRequest extends FlexibleOrderedModel {
     private readonly _postEndpoint;
     private readonly _correspondenceId;
     constructor(obj: IChallengeRequestParams);
+
     /**
      * This is the correspondence ID which will
      * be used in the VP proof (nonce field)
@@ -80,7 +74,8 @@ export declare class ChallengeRequest extends FlexibleOrderedModel {
      * random uuid will be used.
      * @return string
      */
-    readonly correspondenceId: string
+    get correspondenceId (): string;
+
     /**
      * This endpoint is used by the holder app
      * to send information that is requested
@@ -88,25 +83,28 @@ export declare class ChallengeRequest extends FlexibleOrderedModel {
      *
      * @return string
      */
-    readonly postEndpoint: string
+    get postEndpoint (): string;
+
     /**
      * The issuer/verifier will attest
      * these predicates to the holder
      * This array can be empty
      * @return IToAttestParams[]
      */
-    readonly toAttest: IToAttestParams[]
+    get toAttest (): IToAttestParams[];
+
     /**
      * The verifier asks the holder to provide DIDs
      * for the given context URL's (like schema.org)
      * This is optional
      * @return IToVerifyParams[]
      */
-    readonly toVerify: IToVerifyParams[]
+    get toVerify (): IToVerifyParams[];
+
     /**
      * The proof to ensure the integrity
      * and verifiability of the this object
      * @return Proof
      */
-    readonly proof: Proof
+    get proof (): BaseProof;
 }

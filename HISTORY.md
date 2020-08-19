@@ -1,3 +1,25 @@
+# 0.3.0 / 19-08-2020
+
+**BREAKING**
+- Detailed errors: `ConstructError("Can't construct {MODELNAME}: "' + nonEmptyField + '" field is {missing/empty}")`
+- `IVerifiableCredential` renamed to `IVerifiableCredentialParams`
+- `IVerifiablePresentation` renamed to `IVerifiablePresentationParams`
+- `ICredentialStatus` renamed to `ICredentialStatusParams`
+- `IChallengeRequest` renamed to `IChallengeRequestParams`
+- `IVerifiableCredentialParams.proof` is now required (was optional before)
+- The `type` field in `IVerifiableCredentialParams` was of type `string`, but is now `string | string[]`
+- `Proof` was too tightly coupled with the secp256k1 proof structure. `Proof` is now `BaseProof` which only requires a `type` field and the rest is dynamic
+- In your code, please rename your `Proof` import to `Secp256k1Proof` to continue using the same structure
+
+**Enhancements**
+- The `I....Params` interfaces now define a minimum set of required fields, but are not restricted to those fields only.
+This means that structures like `const x: IxParams = {requiredField: 'x', someOtherField: 'x'}` are possible without casting them `as IxParams`
+- Added `VerifiableCredential.typeAsArray()` to get the type consistently
+- Updated all dependencies to their latest major versions
+
+**Bugfixes**
+- Exporting `IToVerifyParams` and `IToAttestParams` (belongs to `ChallengeRequest` model)
+
 # 0.2.2 / 20-01-2020
 
 **Bugfixes**

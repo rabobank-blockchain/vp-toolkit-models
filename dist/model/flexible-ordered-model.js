@@ -30,9 +30,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-const ordered_model_1 = require("./ordered-model");
-const class_transformer_1 = require("class-transformer");
+Object.defineProperty(exports, "__esModule", {value: true})
+exports.FlexibleOrderedModel = void 0
+const ordered_model_1 = require("./ordered-model")
+const class_transformer_1 = require("class-transformer")
+const __1 = require("..")
+
 /**
  * This super class keeps track of all
  * additional fields which are not defined
@@ -43,20 +46,33 @@ const class_transformer_1 = require("class-transformer");
  * inherited model definition.
  */
 class FlexibleOrderedModel extends ordered_model_1.OrderedModel {
-    constructor(obj) {
-        super(obj);
-        this._additionalFields = [];
+  constructor(obj, validateNonEmptyFields) {
+    super(obj)
+    this._additionalFields = []
+    if (!validateNonEmptyFields)
+      return
+    for (const nonEmptyField of validateNonEmptyFields) {
+      if (!Object.keys(obj).includes(nonEmptyField)) {
+        throw new __1.ConstructError('Can\'t construct ' + this.constructor.name + ': "' + nonEmptyField + '" field is missing')
+      }
+      if (obj[nonEmptyField] === undefined || obj[nonEmptyField] === null || obj[nonEmptyField].length === 0
+        || (Array.isArray(obj[nonEmptyField]) && obj[nonEmptyField].filter((val) => val.length > 0).length === 0)) {
+        throw new __1.ConstructError('Can\'t construct ' + this.constructor.name + ': "' + nonEmptyField + '" field is empty')
+      }
     }
-    /**
-     * This property will return all
-     * fields as key-value pairs.
-     * @return any
-     */
-    get additionalFields() {
-        return this._additionalFields;
-    }
-    /**
-     * Converts this object to a json string
+  }
+
+  /**
+   * This property will return all
+   * fields as key-value pairs.
+   * @return any
+   */
+  get additionalFields() {
+    return this._additionalFields
+  }
+
+  /**
+   * Converts this object to a json string
      * using the exact same field order as it
      * was constructed, including the additional
      * fields.

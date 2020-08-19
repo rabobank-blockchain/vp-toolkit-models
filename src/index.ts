@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-export { IProof, IProofParams, Proof } from './model/proof'
-export { ICredentialStatus, ICredentialStatusParams, CredentialStatus } from './model/credential-status'
-export { IVerifiableCredential, IVerifiableCredentialParams, VerifiableCredential } from './model/verifiable-credential'
-export {
-  IVerifiablePresentation, IVerifiablePresentationParams, VerifiablePresentation
-}from './model/verifiable-presentation'
-export { IChallengeRequest, IChallengeRequestParams, ChallengeRequest } from './model/challenge-request'
+export { Secp256k1Proof, ISecp256k1ProofParams } from './model/proofs/secp256k1-proof'
+export { FlexibleOrderedModel } from './model/flexible-ordered-model'
+export { BaseProof, IBaseProof, IBaseProofParams } from './model/proofs/base-proof'
+export { ICredentialStatusParams, CredentialStatus } from './model/credential-status'
+export { IVerifiableCredentialParams, VerifiableCredential } from './model/verifiable-credential'
+export { IVerifiablePresentationParams, VerifiablePresentation } from './model/verifiable-presentation'
+export { IChallengeRequestParams, ChallengeRequest, IToAttestParams, IToVerifyParams } from './model/challenge-request'
+export { ConstructError } from './error/construct-error'

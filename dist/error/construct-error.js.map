@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "construct-error.js",
+  "sourceRoot": "",
+  "sources": [
+    "../../src/error/construct-error.ts"
+  ],
+  "names": [],
+  "mappings": ";AAAA;;;;;;;;;;;;;;GAcG;;;AAEH,MAAa,cAAe,SAAQ,KAAK;IACvC,YAAa,OAAe;QAC1B,KAAK,CAAC,OAAO,CAAC,CAAA;IAChB,CAAC;CACF;AAJD,wCAIC"
+}

@@ -31,16 +31,19 @@
  * limitations under the License.
  */
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const uuid_1 = require("uuid");
-const proof_1 = require("./proof");
-const class_transformer_1 = require("class-transformer");
-const flexible_ordered_model_1 = require("./flexible-ordered-model");
+    var c = arguments.length,
+      r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc)
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r
+    return c > 3 && r && Object.defineProperty(target, key, r), r
+}
+Object.defineProperty(exports, "__esModule", {value: true})
+exports.ChallengeRequest = void 0
+const uuid_1 = require("uuid")
+const class_transformer_1 = require("class-transformer")
+const flexible_ordered_model_1 = require("./flexible-ordered-model")
+const base_proof_1 = require("./proofs/base-proof")
+
 /**
  * Challenge Request model that enables an issuer/verifier
  * to request Verifiable Credentials from the holder.
@@ -50,14 +53,14 @@ const flexible_ordered_model_1 = require("./flexible-ordered-model");
 class ChallengeRequest extends flexible_ordered_model_1.FlexibleOrderedModel {
     constructor(obj) {
         if (!obj.proof) {
-            throw new ReferenceError('One or more fields are empty');
+            throw new ReferenceError('One or more fields are empty')
         }
-        super(obj);
-        this._toAttest = obj.toAttest || [];
-        this._toVerify = obj.toVerify || [];
-        this._proof = new proof_1.Proof(obj.proof);
-        this._postEndpoint = obj.postEndpoint;
-        this._correspondenceId = obj.correspondenceId || uuid_1.v4();
+        super(obj)
+        this._toAttest = obj.toAttest || []
+        this._toVerify = obj.toVerify || []
+        this._proof = obj.proof instanceof base_proof_1.BaseProof ? obj.proof : new base_proof_1.BaseProof(obj.proof)
+        this._postEndpoint = obj.postEndpoint
+        this._correspondenceId = obj.correspondenceId || uuid_1.v4()
     }
     /**
      * This is the correspondence ID which will

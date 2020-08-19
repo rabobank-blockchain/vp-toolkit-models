@@ -14,33 +14,23 @@
  * limitations under the License.
  */
 
-import { IProofParams, Proof } from './proof'
 import { VerifiableCredential } from './verifiable-credential'
 import { Expose, Transform } from 'class-transformer'
 import { FlexibleOrderedModel } from './flexible-ordered-model'
+import { BaseProof, IBaseProof, IBaseProofParams } from './proofs/base-proof'
 
 /**
  * This interface declares the parameters needed to construct a
  * VerifiablePresentation. This interface does not specify the structure of
  * a VerifiablePresentation. Due to unclarities, this interface will be
  * renamed to IVerifiablePresentationParams.
- *
- * @deprecated Will be removed in v0.2, use IVerifiablePresentationParams instead
  */
-export interface IVerifiablePresentation {
+export interface IVerifiablePresentationParams extends Record<string, any> { // Basically extends 'any'
   id?: string
   type: string[]
   verifiableCredential: VerifiableCredential[]
-  proof?: IProofParams[]
+  proof?: IBaseProofParams[]
   '@context'?: string[]
-}
-
-/**
- * Declares the needed parameters
- * to construct a VerifiablePresentation
- */
-// tslint:disable-next-line
-export interface IVerifiablePresentationParams extends IVerifiablePresentation {
 }
 
 /**
@@ -51,7 +41,7 @@ export class VerifiablePresentation extends FlexibleOrderedModel {
   private readonly _id?: string
   private readonly _type: string[]
   private readonly _verifiableCredential: VerifiableCredential[]
-  private readonly _proof: Proof[]
+  private readonly _proof: IBaseProof[]
   private readonly _context?: string[]
 
   constructor (obj: IVerifiablePresentationParams) {
@@ -67,7 +57,7 @@ export class VerifiablePresentation extends FlexibleOrderedModel {
       // If it is not a VC object, it is a VC-parsed JSON string (which has fields without the _ prefixes)
       return vc instanceof VerifiableCredential ? vc : new VerifiableCredential(vc)
     })
-    this._proof = obj.proof.map(x => new Proof(x))
+    this._proof = obj.proof.map(x => x instanceof BaseProof ? x : new BaseProof(x))
     this._context = obj['@context']
     this.initializeAdditionalFields(obj, this)
   }
@@ -109,13 +99,13 @@ export class VerifiablePresentation extends FlexibleOrderedModel {
   /**
    * The associated proof(s) from the sender,
    * proving the ownership of the VC ID's
-   * @return Proof[]
+   * @return IBaseProof[]
    */
   @Expose()
-  @Transform(proofArr => proofArr.map((proof: Proof) => {
+  @Transform(proofArr => proofArr.map((proof: IBaseProof) => {
     return proof.toJSON()
   }))
-  get proof (): Proof[] {
+  get proof (): IBaseProof[] {
     return this._proof
   }
 
