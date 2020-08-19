@@ -41,7 +41,7 @@ export class VerifiablePresentation extends FlexibleOrderedModel {
   private readonly _id?: string
   private readonly _type: string[]
   private readonly _verifiableCredential: VerifiableCredential[]
-  private readonly _proof: IBaseProof[]
+  private readonly _proof: BaseProof[]
   private readonly _context?: string[]
 
   constructor (obj: IVerifiablePresentationParams) {
@@ -105,7 +105,7 @@ export class VerifiablePresentation extends FlexibleOrderedModel {
   @Transform(proofArr => proofArr.map((proof: IBaseProof) => {
     return proof.toJSON()
   }))
-  get proof (): IBaseProof[] {
+  get proof (): BaseProof[] {
     return this._proof
   }
 
