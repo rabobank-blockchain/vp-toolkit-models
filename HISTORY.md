@@ -20,6 +20,11 @@ This means that structures like `const x: IxParams = {requiredField: 'x', someOt
 **Bugfixes**
 - Exporting `IToVerifyParams` and `IToAttestParams` (belongs to `ChallengeRequest` model)
 
+# 0.2.3 / 24-07-2020
+
+**Enhancements**
+- Security Patches for dependent packages
+
 # 0.2.2 / 20-01-2020
 
 **Bugfixes**
