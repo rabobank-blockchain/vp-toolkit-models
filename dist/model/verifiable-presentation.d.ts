@@ -16,7 +16,7 @@
 
 import { VerifiableCredential } from './verifiable-credential'
 import { FlexibleOrderedModel } from './flexible-ordered-model'
-import { IBaseProof, IBaseProofParams } from './proofs/base-proof'
+import { BaseProof, IBaseProofParams } from './proofs/base-proof'
 
 /**
  * This interface declares the parameters needed to construct a
@@ -72,7 +72,7 @@ export declare class VerifiablePresentation extends FlexibleOrderedModel {
      * proving the ownership of the VC ID's
      * @return IBaseProof[]
      */
-    get proof (): IBaseProof[];
+    get proof (): BaseProof[];
 
     /**
      * The context for the verifiable presentation

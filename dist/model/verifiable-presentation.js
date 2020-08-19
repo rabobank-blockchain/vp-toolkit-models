@@ -65,24 +65,26 @@ class VerifiablePresentation extends flexible_ordered_model_1.FlexibleOrderedMod
     this._context = obj['@context']
     this.initializeAdditionalFields(obj, this)
   }
-    /**
-     * Get the identifier for this VP
-     *
-     * According to the standard, an
-     * ID may be omitted
-     * @see https://w3c.github.io/vc-data-model/#identifiers
-     * @return string|undefined
-     */
-    get id() {
-        return this._id;
-    }
-    /**
-     * The type(s) applicable for this instance
-     * @return string[]
-     */
-    get type() {
-      return this._type
-    }
+
+  /**
+   * Get the identifier for this VP
+   *
+   * According to the standard, an
+   * ID may be omitted
+   * @see https://w3c.github.io/vc-data-model/#identifiers
+   * @return string|undefined
+   */
+  get id() {
+    return this._id
+  }
+
+  /**
+   * The type(s) applicable for this instance
+   * @return string[]
+   */
+  get type() {
+    return this._type
+  }
 
   /**
    * The verifiable credentials
@@ -108,13 +110,14 @@ class VerifiablePresentation extends flexible_ordered_model_1.FlexibleOrderedMod
   get context() {
     return this._context
   }
-    /**
-     * The context for the verifiable presentation
-     * @return string[]|undefined
-     */
-    get '@context'() {
-        return this._context;
-    }
+
+  /**
+   * The context for the verifiable presentation
+   * @return string[]|undefined
+   */
+  get '@context'() {
+    return this._context
+  }
 }
 __decorate([
     class_transformer_1.Expose()

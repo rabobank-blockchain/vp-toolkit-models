@@ -1,3 +1,19 @@
+/*
+ * Copyright 2020 Coöperatieve Rabobank U.A.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 "use strict";
 /*
  * Copyright 2020 Coöperatieve Rabobank U.A.
@@ -47,16 +63,17 @@ class VerifiableCredential extends flexible_ordered_model_1.FlexibleOrderedModel
   }
 
   /**
-     * The context for this VC, used to give
-     * context to the credentialsubject values
-     * Is optional, so can be null
-     * @return string[]|undefined
-     */
-    get context() {
-        return this._context;
-    }
-    /**
-     * The context for this VC, used to give
+   * The context for this VC, used to give
+   * context to the credentialsubject values
+   * Is optional, so can be null
+   * @return string[]|undefined
+   */
+  get context() {
+    return this._context
+  }
+
+  /**
+   * The context for this VC, used to give
      * context to the credentialsubject values
      * Is optional, so can be null
      * @return string[]|undefined
@@ -91,13 +108,14 @@ class VerifiableCredential extends flexible_ordered_model_1.FlexibleOrderedModel
   get issuer() {
     return this._issuer
   }
-    /**
-     * The issuance date in a ISO 8601 format
-     * @return string
-     */
-    get issuanceDate() {
-        return this._issuanceDate.toISOString();
-    }
+
+  /**
+   * The issuance date in a ISO 8601 format
+   * @return string
+   */
+  get issuanceDate() {
+    return this._issuanceDate.toISOString()
+  }
 
   /**
    * The collection of claims
@@ -154,8 +172,8 @@ __decorate([
   class_transformer_1.Expose()
 ], VerifiableCredential.prototype, "type", null)
 __decorate([
-    class_transformer_1.Expose()
-], VerifiableCredential.prototype, "issuer", null);
+  class_transformer_1.Expose()
+], VerifiableCredential.prototype, "issuer", null)
 __decorate([
     class_transformer_1.Expose()
 ], VerifiableCredential.prototype, "issuanceDate", null);

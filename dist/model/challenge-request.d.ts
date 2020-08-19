@@ -27,7 +27,6 @@ export interface IToVerifyParams extends Record<string, any> {
     lowerBound?: number;
     upperBound?: number;
 }
-
 /**
  * The issuer specifies which predicates will be issued.
  * This interface provides flexibility for the issuer to
@@ -37,7 +36,6 @@ export interface IToVerifyParams extends Record<string, any> {
 export interface IToAttestParams extends Record<string, any> {
     predicate: string;
 }
-
 /**
  * This interface declares the parameters needed to construct a
  * ChallengeRequest.

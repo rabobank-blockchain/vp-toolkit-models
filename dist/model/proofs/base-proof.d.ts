@@ -27,7 +27,6 @@ export interface IBaseProofParams extends Record<string, any> {
      */
     type: string;
 }
-
 /**
  * Structure of any Proof implementation
  */

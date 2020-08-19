@@ -26,7 +26,6 @@ export interface ISecp256k1ProofParams extends IBaseProofParams {
     nonce?: string;
     signatureValue?: string | undefined;
 }
-
 /**
  * Secp256k1 Proof model
  */
