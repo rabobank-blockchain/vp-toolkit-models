@@ -1,6 +1,7 @@
 # 0.3.0 / 19-08-2020
 
 **BREAKING**
+- Dropped support for Node version 8-11
 - Detailed errors: `ConstructError("Can't construct {MODELNAME}: "' + nonEmptyField + '" field is {missing/empty}")`
 - `IVerifiableCredential` renamed to `IVerifiableCredentialParams`
 - `IVerifiablePresentation` renamed to `IVerifiablePresentationParams`
@@ -16,6 +17,7 @@
 This means that structures like `const x: IxParams = {requiredField: 'x', someOtherField: 'x'}` are possible without casting them `as IxParams`
 - Added `VerifiableCredential.typeAsArray()` to get the type consistently
 - Updated all dependencies to their latest major versions
+- Added support for Node v13 and v14
 
 **Bugfixes**
 - Exporting `IToVerifyParams` and `IToAttestParams` (belongs to `ChallengeRequest` model)
