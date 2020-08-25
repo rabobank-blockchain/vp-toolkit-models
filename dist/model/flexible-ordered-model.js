@@ -83,16 +83,17 @@ class FlexibleOrderedModel extends ordered_model_1.OrderedModel {
     // Merge the dynamic fields with the object
     for (const key of Object.keys(this._additionalFields)) {
       unorderedObj[key] = this._additionalFields[key]
-        }
-        return this.orderPlainObject(unorderedObj);
     }
-    /**
-     * This method will find all additional fields which are passed to
-     * your constructor, but are not declared in your model definition.
-     * These additional fields will be stored and can be accessed through
-     * yourModel.additionalFields.yourCustomField
-     *
-     * @param constructorParams The constructor params your class received
+    return this.orderPlainObject(unorderedObj)
+  }
+
+  /**
+   * This method will find all additional fields which are passed to
+   * your constructor, but are not declared in your model definition.
+   * These additional fields will be stored and can be accessed through
+   * yourModel.additionalFields.yourCustomField
+   *
+   * @param constructorParams The constructor params your class received
      * @param childObject Your model instance that from extends this class
      */
     initializeAdditionalFields(constructorParams, childObject) {

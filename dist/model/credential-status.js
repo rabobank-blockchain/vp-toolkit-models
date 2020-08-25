@@ -52,16 +52,17 @@ class CredentialStatus extends ordered_model_1.OrderedModel {
   constructor(obj) {
     if (!obj.id || !obj.type) {
       throw new ReferenceError('One or more fields are empty')
-        }
-        super(obj);
-        this._id = obj.id;
-        this._type = obj.type;
     }
-    /**
-     * The name of the credential status type
-     * @return string
-     */
-    get type() {
+    super(obj)
+    this._id = obj.id
+    this._type = obj.type
+  }
+
+  /**
+   * The name of the credential status type
+   * @return string
+   */
+  get type() {
         return this._type;
     }
     /**

@@ -53,11 +53,25 @@ export class BaseProof extends FlexibleOrderedModel implements IBaseProof {
     super(obj, validateNonEmptyFields !== undefined ? BaseProof.nonEmptyFields.concat(validateNonEmptyFields) : undefined)
 
     this._type = obj.type
-    if (this.constructor.name === BaseProof.name) {
-      // If the BaseProof class is being instantiated, initialize additional fields.
-      // If a BaseProof-derived class is being instantiated, don't initialize.
-      this.initializeAdditionalFields(obj, this)
-    }
+
+    // All fields (except Type) will end up in additionalFields.
+    // If you extend this class, please use the get() method to access
+    // specific fields that are defined in your model definition.
+    this.initializeAdditionalFields(obj, this)
+  }
+
+  /**
+   * Get a dynamic property
+   */
+  public get<T = any> (fieldName: string): T {
+    return this.additionalFields[fieldName] as T
+  }
+
+  /**
+   * Set/overwrite a dynamic property
+   */
+  public set (fieldName: string, value: any) {
+    return this.additionalFields[fieldName] = value
   }
 
   /**

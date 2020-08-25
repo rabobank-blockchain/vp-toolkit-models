@@ -49,21 +49,6 @@ describe('base proof static', function () {
 
 describe('base proof constructor', function () {
 
-  class TestProof extends BaseProof {
-    constructor (obj: IBaseProofParams) {
-      super(obj)
-    }
-  }
-
-  it('should not initialize additional fields if a derived class is being constructed', () => {
-    // The derived class itself is responsible for calling initializeAdditionalFields()
-    const sut = new TestProof({ type: 'abc', x: 'a' })
-    const sut2 = new BaseProof({ type: 'abc', x: 'a' })
-
-    assert.notExists(sut.additionalFields['x'])
-    assert.exists(sut2.additionalFields['x'])
-  })
-
   it('should return the same object after stringify and parse', () => {
     const sut1 = new BaseProof(testProof)
 

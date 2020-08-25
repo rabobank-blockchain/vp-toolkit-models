@@ -34,17 +34,18 @@ export interface IVerifiableCredentialParams extends Record<string, any> {
     credentialStatus?: ICredentialStatusParams;
     '@context'?: string[];
 }
+
 /**
  * W3C Verifiable Credential model (VC)
  * @see https://w3c.github.io/vc-data-model/#credentials
  */
 export declare class VerifiableCredential extends FlexibleOrderedModel {
+    private readonly _id?
     /**
      * These fields must be present and not empty
      * when constructing this class.
      */
     static nonEmptyFields: string[]
-    private readonly _id?
     private readonly _issuer
     private readonly _issuanceDate
     private readonly _credentialSubject

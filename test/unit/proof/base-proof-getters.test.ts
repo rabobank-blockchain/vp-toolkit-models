@@ -18,11 +18,20 @@ import { assert } from 'chai'
 import { BaseProof } from '../../../src'
 
 describe('baseproof getters', function () {
-  const sut = new BaseProof({
-    type: 'someType'
-  })
+  const baseProofParams = {
+    type: 'someType',
+    someOtherField: 'xyz'
+  }
+  const sut = new BaseProof(baseProofParams)
 
   it('should return an unchanged type', () => {
-    assert.strictEqual(sut.type, 'someType')
+    assert.strictEqual(sut.type, baseProofParams.type)
+  })
+
+  it('should return an additionalField when calling get()', () => {
+    const result = sut.get('someOtherField')
+
+    assert.strictEqual(result, baseProofParams.someOtherField)
+    assert.strictEqual(sut.additionalFields['someOtherField'], result)
   })
 })

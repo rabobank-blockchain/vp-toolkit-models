@@ -50,11 +50,10 @@ class BaseProof extends flexible_ordered_model_1.FlexibleOrderedModel {
   constructor(obj, validateNonEmptyFields) {
     super(obj, validateNonEmptyFields !== undefined ? BaseProof.nonEmptyFields.concat(validateNonEmptyFields) : undefined)
     this._type = obj.type
-    if (this.constructor.name === BaseProof.name) {
-      // If the BaseProof class is being instantiated, initialize additional fields.
-      // If a BaseProof-derived class is being instantiated, don't initialize.
-      this.initializeAdditionalFields(obj, this)
-    }
+    // All fields (except Type) will end up in additionalFields.
+    // If you extend this class, please use the get() method to access
+    // specific fields that are defined in your model definition.
+    this.initializeAdditionalFields(obj, this)
   }
 
   /**
@@ -73,6 +72,20 @@ class BaseProof extends flexible_ordered_model_1.FlexibleOrderedModel {
    */
   static cast(t) {
     return new BaseProof(t.toJSON())
+  }
+
+  /**
+   * Get a dynamic property
+   */
+  get(fieldName) {
+    return this.additionalFields[fieldName]
+  }
+
+  /**
+   * Set/overwrite a dynamic property
+   */
+  set(fieldName, value) {
+    return this.additionalFields[fieldName] = value
   }
 }
 

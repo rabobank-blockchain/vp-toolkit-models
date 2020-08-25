@@ -15,7 +15,6 @@
  */
 
 import { v4 as uuid } from 'uuid'
-import { Expose } from 'class-transformer'
 import { BaseProof, IBaseProofParams } from './base-proof'
 
 /**
@@ -23,7 +22,7 @@ import { BaseProof, IBaseProofParams } from './base-proof'
  * needed to construct a Secp256k1 Proof.
  */
 export interface ISecp256k1ProofParams extends IBaseProofParams {
-  created: Date
+  created: Date | string
   verificationMethod: string
   nonce?: string
   signatureValue?: string | undefined
@@ -33,10 +32,6 @@ export interface ISecp256k1ProofParams extends IBaseProofParams {
  * Secp256k1 Proof model
  */
 export class Secp256k1Proof extends BaseProof {
-  private readonly _created: Date
-  private readonly _verificationMethod: string
-  private readonly _nonce: string
-  private _signatureValue: string | undefined
 
   /**
    * These fields must be present and not empty
@@ -46,15 +41,12 @@ export class Secp256k1Proof extends BaseProof {
   public static supportsType = 'Secp256k1Signature2019'
 
   constructor (obj: ISecp256k1ProofParams) {
-    super(obj, Secp256k1Proof.nonEmptyFields)
-
     // Proof type is set in BaseProof
-    this._created = new Date(obj.created)
-    this._verificationMethod = obj.verificationMethod
-    this._nonce = obj.nonce || uuid()
-    this._signatureValue = obj.signatureValue
+    const fieldsToConstruct = Object.assign({}, obj)
+    fieldsToConstruct.created = new Date(obj.created)
+    fieldsToConstruct.nonce = obj.nonce || uuid()
 
-    this.initializeAdditionalFields(obj, this)
+    super(fieldsToConstruct, Secp256k1Proof.nonEmptyFields)
   }
 
   /**
@@ -66,18 +58,16 @@ export class Secp256k1Proof extends BaseProof {
    * exchange of credentials.
    * @return string
    */
-  @Expose()
   public get nonce (): string {
-    return this._nonce
+    return this.get<string>('nonce')
   }
 
   /**
    * The Created date in a ISO 8601 format
    * @return string
    */
-  @Expose()
   public get created (): string {
-    return this._created.toISOString()
+    return this.get<Date>('created').toISOString()
   }
 
   /**
@@ -85,25 +75,23 @@ export class Secp256k1Proof extends BaseProof {
    * can be an url, public key, DID, etc.
    * @return string
    */
-  @Expose()
   public get verificationMethod (): string {
-    return this._verificationMethod
+    return this.get<string>('verificationMethod')
   }
 
   /**
    * The signature value
    * @return string|undefined
    */
-  @Expose()
   public get signatureValue (): string | undefined {
-    return this._signatureValue
+    return this.get<string | undefined>('signatureValue')
   }
 
   /**
    * Set the signature value
    */
   public set signatureValue (value: string | undefined) {
-    this._signatureValue = value
+    this.set('signatureValue', value)
   }
 
   /**

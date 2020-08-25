@@ -15,7 +15,7 @@
  */
 
 import { assert } from 'chai'
-import { FlexibleOrderedModel, VerifiableCredential } from '../../../src'
+import { BaseProof, FlexibleOrderedModel, VerifiableCredential } from '../../../src'
 import { testCredentialParams } from '../test-helper'
 
 describe('verifiable credential constructor', function () {
@@ -36,6 +36,19 @@ describe('verifiable credential constructor', function () {
 
   it('should not accept empty or missing fields "type", "issuer", "issuanceDate", "credentialSubject" and "proof"', () => {
     assert.deepEqual(VerifiableCredential.nonEmptyFields, ['type', 'issuer', 'issuanceDate', 'credentialSubject', 'proof'])
+  })
+
+  it('should use the same BaseProof object if provided', () => {
+    const expectedProof = new BaseProof(testCredentialParams.proof)
+    const sut = new VerifiableCredential({
+      type: testCredentialParams.type,
+      issuer: testCredentialParams.issuer,
+      issuanceDate: testCredentialParams.issuanceDate,
+      credentialSubject: testCredentialParams.credentialSubject,
+      proof: expectedProof
+    })
+
+    assert.deepStrictEqual(sut.proof, expectedProof)
   })
 
   it('should not throw on all valid inputs', () => {

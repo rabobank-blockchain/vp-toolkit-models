@@ -82,29 +82,25 @@ const castedProof = Secp256k1Proof.cast(verifiableCredential.proof)
 
 ### Your own proof
 
-Introduce your own proof structure by filling this class template:
+Introduce your own proof structure by applying this class template:
 ```typescript
 export interface IYourProofParams extends Record<string, any> { // Basically extends 'any'
   yourCustomField: string
 }
 
 export class YourProof extends BaseProof {
-  private readonly _yourCustomField: string
-
   public static nonEmptyFields = ['yourCustomField']
   public static supportsType = 'YourProofType'
 
   constructor (obj: IYourProofParams) {
-    super(obj, YourProof.nonEmptyFields)
+    const fieldsToConstruct = Object.assign({}, obj)
+    fieldsToConstruct.yourCustomField = doSomethingWith(obj.yourCustomField) // Some field conversions if needed
 
-    this._yourCustomField = obj.yourCustomField
-
-    this.initializeAdditionalFields(obj, this) // Inherited from BaseProof
+    super(fieldsToConstruct, YourProof.nonEmptyFields)
   }
 
-  @Expose()
   public get yourCustomField (): string {
-    return this._yourCustomField
+    return this.get<string>('yourCustomField')
   }
 
   public static cast (t: BaseProof): YourProof {

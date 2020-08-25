@@ -21,11 +21,12 @@ import { BaseProof, IBaseProofParams } from './base-proof'
  * needed to construct a Secp256k1 Proof.
  */
 export interface ISecp256k1ProofParams extends IBaseProofParams {
-    created: Date;
+    created: Date | string;
     verificationMethod: string;
     nonce?: string;
     signatureValue?: string | undefined;
 }
+
 /**
  * Secp256k1 Proof model
  */
@@ -36,24 +37,8 @@ export declare class Secp256k1Proof extends BaseProof {
      */
     static nonEmptyFields: string[]
     static supportsType: string
-    private readonly _created
-    private readonly _verificationMethod
-    private readonly _nonce
 
     constructor (obj: ISecp256k1ProofParams);
-
-    private _signatureValue
-
-    /**
-     * The signature value
-     * @return string|undefined
-     */
-    get signatureValue (): string | undefined;
-
-    /**
-     * Set the signature value
-     */
-    set signatureValue (value: string | undefined);
 
     /**
      * The nonce in uuidv4 format
@@ -78,6 +63,16 @@ export declare class Secp256k1Proof extends BaseProof {
      * @return string
      */
     get verificationMethod (): string;
+
+    /**
+     * The signature value
+     * @return string|undefined
+     */
+    get signatureValue (): string | undefined;
+    /**
+     * Set the signature value
+     */
+    set signatureValue (value: string | undefined);
 
     /**
      * Cast a BaseProof object to this object

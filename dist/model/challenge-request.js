@@ -62,16 +62,17 @@ class ChallengeRequest extends flexible_ordered_model_1.FlexibleOrderedModel {
     this._postEndpoint = obj.postEndpoint
     this._correspondenceId = obj.correspondenceId || uuid_1.v4()
   }
-    /**
-     * This is the correspondence ID which will
-     * be used in the VP proof (nonce field)
-     * from the holder to the counterparty
-     * (which is an issuer or verifier).
-     *
-     * If no correspondenceId is provided, a
-     * random uuid will be used.
-     * @return string
-     */
+
+  /**
+   * This is the correspondence ID which will
+   * be used in the VP proof (nonce field)
+   * from the holder to the counterparty
+   * (which is an issuer or verifier).
+   *
+   * If no correspondenceId is provided, a
+   * random uuid will be used.
+   * @return string
+   */
     get correspondenceId() {
         return this._correspondenceId;
     }

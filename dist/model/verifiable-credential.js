@@ -74,24 +74,25 @@ class VerifiableCredential extends flexible_ordered_model_1.FlexibleOrderedModel
 
   /**
    * The context for this VC, used to give
-     * context to the credentialsubject values
-     * Is optional, so can be null
-     * @return string[]|undefined
-     */
-    get '@context'() {
-        return this._context;
-    }
-    /**
-     * An identifier for this VC
-     *
-     * According to the standard, an
-     * ID may be omitted
-     * @see https://w3c.github.io/vc-data-model/#identifiers
-     * @return string|undefined
-     */
-    get id() {
-      return this._id
-    }
+   * context to the credentialsubject values
+   * Is optional, so can be null
+   * @return string[]|undefined
+   */
+  get '@context'() {
+    return this._context
+  }
+
+  /**
+   * An identifier for this VC
+   *
+   * According to the standard, an
+   * ID may be omitted
+   * @see https://w3c.github.io/vc-data-model/#identifiers
+   * @return string|undefined
+   */
+  get id() {
+    return this._id
+  }
 
   /**
    * The VC type
@@ -175,8 +176,8 @@ __decorate([
   class_transformer_1.Expose()
 ], VerifiableCredential.prototype, "issuer", null)
 __decorate([
-    class_transformer_1.Expose()
-], VerifiableCredential.prototype, "issuanceDate", null);
+  class_transformer_1.Expose()
+], VerifiableCredential.prototype, "issuanceDate", null)
 __decorate([
     class_transformer_1.Expose()
 ], VerifiableCredential.prototype, "credentialSubject", null);

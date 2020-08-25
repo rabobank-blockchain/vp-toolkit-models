@@ -15,10 +15,21 @@
  */
 
 import { assert } from 'chai'
-import { ChallengeRequest } from '../../../src'
+import { BaseProof, ChallengeRequest } from '../../../src'
 import { challengeRequestTestData, testProofParams } from '../test-helper'
 
 describe('challenge request constructor', function () {
+
+  it('should use the same BaseProof object if provided', () => {
+    const expectedProof = new BaseProof(testProofParams)
+    const sut = new ChallengeRequest({
+      toAttest: challengeRequestTestData.toAttest,
+      postEndpoint: challengeRequestTestData.postEndpoint,
+      proof: expectedProof
+    })
+
+    assert.deepStrictEqual(sut.proof, expectedProof)
+  })
 
   it('should accept undefined toverify field', () => {
     const createSut = () => {

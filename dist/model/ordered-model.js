@@ -44,16 +44,18 @@ class OrderedModel {
   constructor(sourceObj) {
     // Loop through all object keys and record their indexes
     this._keyIndexes = Object.keys(sourceObj).map(key => key)
-    }
-    /**
-     * Converts this instance to a flat object
-     * @return object
-     */
-    toJSON() {
-        const unorderedObj = class_transformer_1.classToPlain(this, { excludePrefixes: ['_'] });
-        return this.orderPlainObject(unorderedObj);
-    }
-    /**
+  }
+
+  /**
+   * Converts this instance to a flat object
+   * @return object
+   */
+  toJSON() {
+    const unorderedObj = class_transformer_1.classToPlain(this, {excludePrefixes: ['_']})
+    return this.orderPlainObject(unorderedObj)
+  }
+
+  /**
      * Place the fields in the right order by using the keyIndexes
      * @param unorderedObject
      * @return {any}

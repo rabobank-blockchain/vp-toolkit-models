@@ -15,10 +15,22 @@
  */
 
 import { assert } from 'chai'
-import { VerifiablePresentation } from '../../../src'
+import { BaseProof, VerifiablePresentation } from '../../../src'
 import { verifiablePresentationTestData } from '../test-helper'
 
 describe('verifiable presentation constructor', function () {
+
+  it('should use the same BaseProof object if provided', () => {
+    const expectedProofs = verifiablePresentationTestData.proof.map(p => new BaseProof(p))
+    const sut = new VerifiablePresentation({
+      type: ['VerifiablePresentation'],
+      verifiableCredential: verifiablePresentationTestData.verifiableCredential,
+      proof: expectedProofs
+    })
+
+    assert.deepStrictEqual(sut.proof, expectedProofs)
+  })
+
   it('should not accept empty type array', () => {
     const createSut = () => {
       return new VerifiablePresentation({
