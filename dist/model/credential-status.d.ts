@@ -24,7 +24,6 @@ export interface ICredentialStatusParams extends Record<string, any> {
     id: string;
     type: string;
 }
-
 /**
  * W3C Verifiable Credential CredentialStatus model
  * Used for checking whether the credential is revoked or suspended

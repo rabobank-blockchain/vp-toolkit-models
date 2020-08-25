@@ -50,16 +50,6 @@ export declare class BaseProof extends FlexibleOrderedModel implements IBaseProo
     constructor (obj: IBaseProofParams, validateNonEmptyFields?: string[]);
 
     /**
-     * Get a dynamic property
-     */
-    get<T = any> (fieldName: string): T;
-
-    /**
-     * Set/overwrite a dynamic property
-     */
-    set (fieldName: string, value: any): any;
-
-    /**
      * The name of the signature type
      * @return string
      */
@@ -72,4 +62,14 @@ export declare class BaseProof extends FlexibleOrderedModel implements IBaseProo
      * @return this
      */
     static cast (t: BaseProof): BaseProof;
+
+    /**
+     * Get a dynamic property
+     */
+    get<T = any> (fieldName: string): T;
+
+    /**
+     * Set/overwrite a dynamic property
+     */
+    set (fieldName: string, value: any): any;
 }

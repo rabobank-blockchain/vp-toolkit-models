@@ -73,16 +73,17 @@ class ChallengeRequest extends flexible_ordered_model_1.FlexibleOrderedModel {
    * random uuid will be used.
    * @return string
    */
-    get correspondenceId() {
-        return this._correspondenceId;
-    }
-    /**
-     * This endpoint is used by the holder app
-     * to send information that is requested
-     * in the ChallengeRequest
-     *
-     * @return string
-     */
+  get correspondenceId() {
+    return this._correspondenceId
+  }
+
+  /**
+   * This endpoint is used by the holder app
+   * to send information that is requested
+   * in the ChallengeRequest
+   *
+   * @return string
+   */
     get postEndpoint() {
         return this._postEndpoint;
     }

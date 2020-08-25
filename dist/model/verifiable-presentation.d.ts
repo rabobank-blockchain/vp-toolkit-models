@@ -31,58 +31,57 @@ export interface IVerifiablePresentationParams extends Record<string, any> {
     proof?: IBaseProofParams[];
     '@context'?: string[];
 }
-
 /**
  * W3C Verifiable Presentation model (VP)
  * @see https://w3c.github.io/vc-data-model/#presentations-0
  */
 export declare class VerifiablePresentation extends FlexibleOrderedModel {
-    private readonly _id?
-    private readonly _type
-    private readonly _verifiableCredential
-    private readonly _proof
-    private readonly _context?
+  private readonly _id?
+  private readonly _type
+  private readonly _verifiableCredential
+  private readonly _proof
+  private readonly _context?
 
-    constructor (obj: IVerifiablePresentationParams);
+  constructor (obj: IVerifiablePresentationParams);
 
-    /**
-     * Get the identifier for this VP
-     *
-     * According to the standard, an
-     * ID may be omitted
-     * @see https://w3c.github.io/vc-data-model/#identifiers
-     * @return string|undefined
-     */
-    get id (): string | undefined;
+  /**
+   * Get the identifier for this VP
+   *
+   * According to the standard, an
+   * ID may be omitted
+   * @see https://w3c.github.io/vc-data-model/#identifiers
+   * @return string|undefined
+   */
+  get id (): string | undefined;
 
-    /**
-     * The type(s) applicable for this instance
-     * @return string[]
-     */
-    get type (): string[];
+  /**
+   * The type(s) applicable for this instance
+   * @return string[]
+   */
+  get type (): string[];
 
-    /**
-     * The verifiable credentials
-     * @return VerifiableCredential[]
-     */
-    get verifiableCredential (): VerifiableCredential[];
+  /**
+   * The verifiable credentials
+   * @return VerifiableCredential[]
+   */
+  get verifiableCredential (): VerifiableCredential[];
 
-    /**
-     * The associated proof(s) from the sender,
-     * proving the ownership of the VC ID's
-     * @return IBaseProof[]
-     */
-    get proof (): BaseProof[];
+  /**
+   * The associated proof(s) from the sender,
+   * proving the ownership of the VC ID's
+   * @return IBaseProof[]
+   */
+  get proof (): BaseProof[];
 
-    /**
-     * The context for the verifiable presentation
-     * @return string[]|undefined
-     */
-    get context (): string[] | undefined;
+  /**
+   * The context for the verifiable presentation
+   * @return string[]|undefined
+   */
+  get context (): string[] | undefined;
 
-    /**
-     * The context for the verifiable presentation
-     * @return string[]|undefined
-     */
-    get '@context' (): string[] | undefined;
+  /**
+   * The context for the verifiable presentation
+   * @return string[]|undefined
+   */
+  get '@context' (): string[] | undefined;
 }

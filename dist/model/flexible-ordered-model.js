@@ -94,16 +94,16 @@ class FlexibleOrderedModel extends ordered_model_1.OrderedModel {
    * yourModel.additionalFields.yourCustomField
    *
    * @param constructorParams The constructor params your class received
-     * @param childObject Your model instance that from extends this class
-     */
-    initializeAdditionalFields(constructorParams, childObject) {
-        const objectKeys = Object.keys(class_transformer_1.classToPlain(childObject));
-        for (const key of Object.keys(constructorParams)) {
-            if (!objectKeys.includes(key)) {
-                this._additionalFields[key] = constructorParams[key];
-            }
-        }
+   * @param childObject Your model instance that from extends this class
+   */
+  initializeAdditionalFields(constructorParams, childObject) {
+    const objectKeys = Object.keys(class_transformer_1.classToPlain(childObject))
+    for (const key of Object.keys(constructorParams)) {
+      if (!objectKeys.includes(key)) {
+        this._additionalFields[key] = constructorParams[key]
+      }
     }
+  }
 }
 exports.FlexibleOrderedModel = FlexibleOrderedModel;
 //# sourceMappingURL=flexible-ordered-model.js.map

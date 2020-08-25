@@ -63,16 +63,17 @@ class CredentialStatus extends ordered_model_1.OrderedModel {
    * @return string
    */
   get type() {
-        return this._type;
-    }
-    /**
-     * The ID which can be consulted according to the type
-     * According to the spec this must be an URL, but we can
-     * also use it to refer to a blockchain contract address
-     * @return string
-     */
-    get id() {
-        return this._id;
+    return this._type
+  }
+
+  /**
+   * The ID which can be consulted according to the type
+   * According to the spec this must be an URL, but we can
+   * also use it to refer to a blockchain contract address
+   * @return string
+   */
+  get id() {
+    return this._id
     }
 }
 __decorate([

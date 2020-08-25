@@ -56,16 +56,16 @@ class OrderedModel {
   }
 
   /**
-     * Place the fields in the right order by using the keyIndexes
-     * @param unorderedObject
-     * @return {any}
-     */
-    orderPlainObject(unorderedObject) {
-        const orderedObj = {}; // The result after ordering fields
-        // Get all field names from the keyIndexes. Any unindexed fields
-        // from the given object will be added at the end of the array.
-        const objectFieldNames = this._keyIndexes.concat(Object.keys(unorderedObject).filter((key) => {
-            return !this._keyIndexes.includes(key);
+   * Place the fields in the right order by using the keyIndexes
+   * @param unorderedObject
+   * @return {any}
+   */
+  orderPlainObject(unorderedObject) {
+    const orderedObj = {} // The result after ordering fields
+    // Get all field names from the keyIndexes. Any unindexed fields
+    // from the given object will be added at the end of the array.
+    const objectFieldNames = this._keyIndexes.concat(Object.keys(unorderedObject).filter((key) => {
+      return !this._keyIndexes.includes(key)
         }));
         // Loop through all ordered keys and construct a new object
         for (const key of objectFieldNames) {

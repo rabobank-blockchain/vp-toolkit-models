@@ -179,8 +179,8 @@ __decorate([
   class_transformer_1.Expose()
 ], VerifiableCredential.prototype, "issuanceDate", null)
 __decorate([
-    class_transformer_1.Expose()
-], VerifiableCredential.prototype, "credentialSubject", null);
+  class_transformer_1.Expose()
+], VerifiableCredential.prototype, "credentialSubject", null)
 __decorate([
     class_transformer_1.Expose(),
     class_transformer_1.Transform((proof) => proof.toJSON())
