@@ -84,16 +84,17 @@ class ChallengeRequest extends flexible_ordered_model_1.FlexibleOrderedModel {
    *
    * @return string
    */
-    get postEndpoint() {
-        return this._postEndpoint;
-    }
-    /**
-     * The issuer/verifier will attest
-     * these predicates to the holder
-     * This array can be empty
-     * @return IToAttestParams[]
-     */
-    get toAttest() {
+  get postEndpoint() {
+    return this._postEndpoint
+  }
+
+  /**
+   * The issuer/verifier will attest
+   * these predicates to the holder
+   * This array can be empty
+   * @return IToAttestParams[]
+   */
+  get toAttest() {
         return this._toAttest;
     }
     /**
@@ -103,32 +104,46 @@ class ChallengeRequest extends flexible_ordered_model_1.FlexibleOrderedModel {
      * @return IToVerifyParams[]
      */
     get toVerify() {
-        return this._toVerify;
+      return this._toVerify
     }
-    /**
-     * The proof to ensure the integrity
-     * and verifiability of the this object
-     * @return Proof
-     */
-    get proof() {
-        return this._proof;
-    }
+
+  /**
+   * The proof to ensure the integrity
+   * and verifiability of the this object
+   * @return Proof
+   */
+  get proof() {
+    return this._proof
+  }
+
+  /**
+   * ChallengeRequest model version
+   * @return {number}
+   */
+  get version() {
+    return ChallengeRequest.version
+  }
 }
+
+ChallengeRequest.version = 1
 __decorate([
-    class_transformer_1.Expose()
-], ChallengeRequest.prototype, "correspondenceId", null);
+  class_transformer_1.Expose()
+], ChallengeRequest.prototype, "correspondenceId", null)
 __decorate([
-    class_transformer_1.Expose()
-], ChallengeRequest.prototype, "postEndpoint", null);
+  class_transformer_1.Expose()
+], ChallengeRequest.prototype, "postEndpoint", null)
 __decorate([
-    class_transformer_1.Expose()
-], ChallengeRequest.prototype, "toAttest", null);
+  class_transformer_1.Expose()
+], ChallengeRequest.prototype, "toAttest", null)
 __decorate([
     class_transformer_1.Expose()
 ], ChallengeRequest.prototype, "toVerify", null);
 __decorate([
-    class_transformer_1.Expose(),
-    class_transformer_1.Transform((proof) => proof.toJSON())
-], ChallengeRequest.prototype, "proof", null);
-exports.ChallengeRequest = ChallengeRequest;
+  class_transformer_1.Expose(),
+  class_transformer_1.Transform((proof) => proof.toJSON())
+], ChallengeRequest.prototype, "proof", null)
+__decorate([
+  class_transformer_1.Expose()
+], ChallengeRequest.prototype, "version", null)
+exports.ChallengeRequest = ChallengeRequest
 //# sourceMappingURL=challenge-request.js.map

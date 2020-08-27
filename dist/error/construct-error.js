@@ -34,9 +34,9 @@ Object.defineProperty(exports, "__esModule", {value: true})
 exports.ConstructError = void 0
 
 class ConstructError extends Error {
-  constructor(message) {
-    super(message)
-  }
+    constructor(message) {
+        super(message)
+    }
 }
 
 exports.ConstructError = ConstructError

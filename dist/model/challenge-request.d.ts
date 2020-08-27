@@ -59,7 +59,8 @@ export declare class ChallengeRequest extends FlexibleOrderedModel {
     private readonly _toVerify;
     private readonly _proof;
     private readonly _postEndpoint;
-    private readonly _correspondenceId;
+    private readonly _correspondenceId
+    static version: number
     constructor(obj: IChallengeRequestParams);
 
     /**
@@ -105,4 +106,10 @@ export declare class ChallengeRequest extends FlexibleOrderedModel {
      * @return Proof
      */
     get proof (): BaseProof;
+
+    /**
+     * ChallengeRequest model version
+     * @return {number}
+     */
+    get version (): number;
 }

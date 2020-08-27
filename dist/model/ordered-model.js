@@ -66,13 +66,13 @@ class OrderedModel {
     // from the given object will be added at the end of the array.
     const objectFieldNames = this._keyIndexes.concat(Object.keys(unorderedObject).filter((key) => {
       return !this._keyIndexes.includes(key)
-        }));
-        // Loop through all ordered keys and construct a new object
-        for (const key of objectFieldNames) {
-            orderedObj[key] = unorderedObject[key];
-        }
-        return orderedObj;
+    }))
+    // Loop through all ordered keys and construct a new object
+    for (const key of objectFieldNames) {
+      orderedObj[key] = unorderedObject[key]
     }
+    return orderedObj
+  }
 }
 exports.OrderedModel = OrderedModel;
 //# sourceMappingURL=ordered-model.js.map

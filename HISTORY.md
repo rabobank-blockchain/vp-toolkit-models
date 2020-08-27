@@ -18,6 +18,7 @@
 - To make use of proper typehinting (without relying on `additionalFields`), [cast the proof to the correct type](README.md#proofs)
 
 **Enhancements**
+- `ChallengeRequest` has a `version` property
 - The `I....Params` interfaces now define a minimum set of required fields, but are not restricted to those fields only.
 This means that structures like `const x: IxParams = {requiredField: 'x', someOtherField: 'x'}` are possible without casting them `as IxParams`
 - Added `VerifiableCredential.typeAsArray()` to get the type consistently

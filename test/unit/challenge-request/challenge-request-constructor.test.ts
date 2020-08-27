@@ -113,4 +113,7 @@ describe('challenge request constructor', function () {
     assert.deepEqual(sut1Parsed, sut2Parsed)
   })
 
+  it('should return static version number 1', () => {
+    assert.equal(ChallengeRequest.version, 1)
+  })
 })

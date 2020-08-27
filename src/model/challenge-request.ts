@@ -66,6 +66,7 @@ export class ChallengeRequest extends FlexibleOrderedModel {
   private readonly _proof: BaseProof
   private readonly _postEndpoint: string
   private readonly _correspondenceId: string
+  public static version = 1
 
   constructor (obj: IChallengeRequestParams) {
     if (!obj.proof) {
@@ -138,5 +139,14 @@ export class ChallengeRequest extends FlexibleOrderedModel {
   @Transform((proof: BaseProof) => proof.toJSON())
   public get proof (): BaseProof {
     return this._proof
+  }
+
+  /**
+   * ChallengeRequest model version
+   * @return {number}
+   */
+  @Expose()
+  get version (): number {
+    return ChallengeRequest.version
   }
 }

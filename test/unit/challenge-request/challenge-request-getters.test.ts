@@ -27,6 +27,10 @@ describe('challenge request getters', function () {
     proof: testProofParams
   })
 
+  it('should return the static version number', () => {
+    assert.equal(sut.version, ChallengeRequest.version)
+  })
+
   it('should return a valid uuid v4 correspondenceId when it is not provided', () => {
     const challengeRequest = new ChallengeRequest({
       toAttest: challengeRequestTestData.toAttest,

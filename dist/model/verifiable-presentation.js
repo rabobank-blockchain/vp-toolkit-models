@@ -65,16 +65,17 @@ class VerifiablePresentation extends flexible_ordered_model_1.FlexibleOrderedMod
     this._context = obj['@context']
     this.initializeAdditionalFields(obj, this)
   }
-    /**
-     * Get the identifier for this VP
-     *
-     * According to the standard, an
-     * ID may be omitted
-     * @see https://w3c.github.io/vc-data-model/#identifiers
-     * @return string|undefined
-     */
-    get id() {
-      return this._id
+
+  /**
+   * Get the identifier for this VP
+   *
+   * According to the standard, an
+   * ID may be omitted
+   * @see https://w3c.github.io/vc-data-model/#identifiers
+   * @return string|undefined
+   */
+  get id() {
+    return this._id
     }
     /**
      * The type(s) applicable for this instance

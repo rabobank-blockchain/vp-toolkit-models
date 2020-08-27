@@ -74,7 +74,7 @@ class CredentialStatus extends ordered_model_1.OrderedModel {
    */
   get id() {
     return this._id
-    }
+  }
 }
 __decorate([
     class_transformer_1.Expose()
