@@ -14,6 +14,7 @@
 *Migration steps:*
 - Rename your `Proof` import to `Secp256k1Proof`
 - Use `verifiableCredential.typeAsArray()` instead of `verifiableCredential.type` to retrieve the type as an array
+- When constructing a VerifiablePresentation or VerifiableCredential, make sure the `proof` is an actual `Secp256k1Proof` object, otherwise the `nonce` field will be missing!
 - Unrecognized fields (like `verificationMethod` and `created`) can be found in `proof.additionalFields`
 - To make use of proper typehinting (without relying on `additionalFields`), [cast the proof to the correct type](README.md#proofs)
 
