@@ -1,4 +1,4 @@
-# 0.3.0 / 19-08-2020
+# 0.3.0 / 01-09-2020
 
 **BREAKING**
 - Dropped support for Node version 8-11
