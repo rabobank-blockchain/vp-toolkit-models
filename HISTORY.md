@@ -1,3 +1,8 @@
+# 0.2.3 / 15-10-2020
+
+**Enhancements**
+- Added fields `termsOfUse` and `expirationDate` ([#21](https://github.com/rabobank-blockchain/vp-toolkit-models/issues/21))
+
 # 0.2.2 / 20-01-2020
 
 **Bugfixes**
