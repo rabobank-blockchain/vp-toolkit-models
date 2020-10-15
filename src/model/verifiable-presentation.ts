@@ -27,9 +27,9 @@ import { BaseProof, IBaseProof, IBaseProofParams } from './proofs/base-proof'
  */
 export interface IVerifiablePresentationParams extends Record<string, any> { // Basically extends 'any'
   id?: string
-  type: string[]
+  type: string | string[]
   verifiableCredential: VerifiableCredential[]
-  proof?: IBaseProofParams[]
+  proof?: IBaseProofParams | IBaseProofParams[]
   '@context'?: string[]
 }
 
@@ -38,18 +38,20 @@ export interface IVerifiablePresentationParams extends Record<string, any> { // 
  * @see https://w3c.github.io/vc-data-model/#presentations-0
  */
 export class VerifiablePresentation extends FlexibleOrderedModel {
+  /**
+   * These fields must be present and not empty
+   * when constructing this class.
+   */
+  public static nonEmptyFields = ['type', 'verifiableCredential', 'proof']
+
   private readonly _id?: string
-  private readonly _type: string[]
+  private readonly _type: string | string[]
   private readonly _verifiableCredential: VerifiableCredential[]
-  private readonly _proof: BaseProof[]
+  private readonly _proof: BaseProof | BaseProof[]
   private readonly _context?: string[]
 
   constructor (obj: IVerifiablePresentationParams) {
-    if (!obj.type || obj.type.length === 0 || obj.type.join().length === obj.type.length - 1
-      || !obj.verifiableCredential || obj.verifiableCredential.length === 0 || !obj.proof) {
-      throw new ReferenceError('One or more fields are empty')
-    }
-    super(obj)
+    super(obj, VerifiablePresentation.nonEmptyFields)
 
     this._id = obj.id
     this._type = obj.type
@@ -57,7 +59,7 @@ export class VerifiablePresentation extends FlexibleOrderedModel {
       // If it is not a VC object, it is a VC-parsed JSON string (which has fields without the _ prefixes)
       return vc instanceof VerifiableCredential ? vc : new VerifiableCredential(vc)
     })
-    this._proof = obj.proof.map(x => x instanceof BaseProof ? x : new BaseProof(x))
+    this._proof = Array.isArray(obj.proof) ? obj.proof.map(this.getBaseProof) : this.getBaseProof(obj.proof)
     this._context = obj['@context']
     this.initializeAdditionalFields(obj, this)
   }
@@ -80,7 +82,7 @@ export class VerifiablePresentation extends FlexibleOrderedModel {
    * @return string[]
    */
   @Expose()
-  get type (): string[] {
+  public get type (): string | string[] {
     return this._type
   }
 
@@ -99,14 +101,27 @@ export class VerifiablePresentation extends FlexibleOrderedModel {
   /**
    * The associated proof(s) from the sender,
    * proving the ownership of the VC ID's
-   * @return IBaseProof[]
+   * @return {IBaseProof|IBaseProof[]}
    */
   @Expose()
-  @Transform(proofArr => proofArr.map((proof: IBaseProof) => {
-    return proof.toJSON()
-  }))
-  get proof (): BaseProof[] {
+  @Transform(proof => Array.isArray(proof)
+    ? proof.map((proof: IBaseProof) => {
+      return proof.toJSON()
+    })
+    : proof.toJSON()
+  )
+  get proof (): BaseProof | BaseProof[] {
     return this._proof
+  }
+
+  /**
+   * Sometimes the Proof can be a single BaseProof
+   * object instead of an array. This method always returns
+   * the proof as an array.
+   * @return BaseProof[]
+   */
+  public proofAsArray (): BaseProof[] {
+    return Array.isArray(this._proof) ? this._proof : [this._proof]
   }
 
   /**
@@ -124,5 +139,19 @@ export class VerifiablePresentation extends FlexibleOrderedModel {
   @Expose()
   get '@context' (): string[] | undefined {
     return this._context
+  }
+
+  /**
+   * Sometimes the Type can be of type string
+   * instead of an array. This method always returns
+   * the type as an array.
+   * @return string[]
+   */
+  public typeAsArray (): string[] {
+    return typeof this._type === 'string' ? [this._type] : this._type
+  }
+
+  private getBaseProof (proof: any) {
+    return proof instanceof BaseProof ? proof : new BaseProof(proof)
   }
 }

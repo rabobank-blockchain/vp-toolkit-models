@@ -41,12 +41,13 @@ export interface IVerifiableCredentialParams extends Record<string, any> { // Ba
  * @see https://w3c.github.io/vc-data-model/#credentials
  */
 export class VerifiableCredential extends FlexibleOrderedModel {
-  private readonly _id?: string
   /**
    * These fields must be present and not empty
    * when constructing this class.
    */
   public static nonEmptyFields = ['type', 'issuer', 'issuanceDate', 'credentialSubject', 'proof']
+
+  private readonly _id?: string
   private readonly _issuer: string
   private readonly _issuanceDate: Date
   private readonly _credentialSubject: any

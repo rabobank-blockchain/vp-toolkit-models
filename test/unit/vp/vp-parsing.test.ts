@@ -15,8 +15,8 @@
  */
 
 import { assert } from 'chai'
-import { VerifiablePresentation } from '../../../src'
-import { testVp } from '../test-helper'
+import { Secp256k1Proof, VerifiablePresentation } from '../../../src'
+import { testProofParams, testVp } from '../test-helper'
 
 describe('verifiable presentation field ordering, stringify and parse', function () {
   it('should class-transform the verifiablecredential field correctly when parsing', () => {
@@ -50,7 +50,7 @@ describe('verifiable presentation field ordering, stringify and parse', function
     assert.deepEqual(sut1Parsed, sut2Parsed)
   })
 
-  it('should stringify a JSON object to a the correct format and order', () => {
+  it('should stringify a VP with proof array to a the correct format and order', () => {
     const sut1 = new VerifiablePresentation({
       id: testVp.id,
       type: testVp.type,
@@ -63,5 +63,20 @@ describe('verifiable presentation field ordering, stringify and parse', function
     const strObj = JSON.stringify(sut1.toJSON())
     const obj = JSON.parse(strObj)
     assert.equal(strObj, `{"id":"urn:uuid:3978344f-8596-4c3a-a978-8fcaba3903c5","type":["VerifiablePresentation"],"randomTestField":"abc","verifiableCredential":[{"id":"did:protocol:address","type":["VerifiableCredential"],"issuer":"did:protocol:issueraddress","issuanceDate":"${obj.verifiableCredential[0].issuanceDate}","credentialSubject":{"id":"did:protocol:holderaddress","type":"John"},"proof":{"type":"SignatureAlgorithmName","created":"${obj.verifiableCredential[0].proof.created}","verificationMethod":"verification method X","nonce":"${obj.verifiableCredential[0].proof.nonce}"},"credentialStatus":{"type":"vcStatusRegistry2019","id":"0x6AbAAFB672f60C16C604A29426aDA1Af9d96d440"},"optionalField":"optionalContent","@context":["https://www.w3.org/2018/credentials/v1","https://schema.org/givenName"]}],"proof":[{"type":"SignatureAlgorithmName","created":"${obj.proof[0].created}","verificationMethod":"verification method","nonce":"${obj.proof[0].nonce}"}]}`)
+  })
+
+  it('should stringify a VP with single proof object to a the correct format and order', () => {
+    const sut1 = new VerifiablePresentation({
+      id: testVp.id,
+      type: testVp.type,
+      'randomTestField': 'abc',
+      verifiableCredential: testVp.verifiableCredential,
+      proof: new Secp256k1Proof(testProofParams),
+      '@context': testVp['@context']
+    })
+
+    const strObj = JSON.stringify(sut1.toJSON())
+    const obj = JSON.parse(strObj)
+    assert.equal(strObj, `{"id":"urn:uuid:3978344f-8596-4c3a-a978-8fcaba3903c5","type":["VerifiablePresentation"],"randomTestField":"abc","verifiableCredential":[{"id":"did:protocol:address","type":["VerifiableCredential"],"issuer":"did:protocol:issueraddress","issuanceDate":"${obj.verifiableCredential[0].issuanceDate}","credentialSubject":{"id":"did:protocol:holderaddress","type":"John"},"proof":{"type":"SignatureAlgorithmName","created":"${obj.verifiableCredential[0].proof.created}","verificationMethod":"verification method X","nonce":"${obj.verifiableCredential[0].proof.nonce}"},"credentialStatus":{"type":"vcStatusRegistry2019","id":"0x6AbAAFB672f60C16C604A29426aDA1Af9d96d440"},"optionalField":"optionalContent","@context":["https://www.w3.org/2018/credentials/v1","https://schema.org/givenName"]}],"proof":{"type":"SignatureAlgorithmName","created":"${obj.proof.created}","verificationMethod":"verification method","nonce":"${obj.proof.nonce}"}}`)
   })
 })

@@ -8,12 +8,14 @@
 - `ICredentialStatus` renamed to `ICredentialStatusParams`
 - `IChallengeRequest` renamed to `IChallengeRequestParams`
 - `IVerifiableCredentialParams.proof` is now required (was optional before)
-- The `type` field in `IVerifiableCredentialParams` was of type `string`, but is now `string | string[]`
+- The `type` field in `VerifiableCredential` and `VerifiablePresentation` was of type `string[]`, but is now `string | string[]`
 - `Proof` was too tightly coupled with the secp256k1 proof structure. `Proof` is now `BaseProof` which only requires a `type` field and the rest is dynamic
+- The `VerifiablePresentation.proof` type changed from `Proof[]` to `BaseProof | BaseProof[]`
 
 *Migration steps:*
 - Rename your `Proof` import to `Secp256k1Proof`
-- Use `verifiableCredential.typeAsArray()` instead of `verifiableCredential.type` to retrieve the type as an array
+- Use `verifiablePresentation.proofAsArray()` instead of `verifiablePresentation.proof` to retrieve the proof as an array
+- For `VerifiablePresentation` and `VerifiableCredential`, use `.typeAsArray()` instead of `.type` to retrieve the type as an array
 - When constructing a VerifiablePresentation or VerifiableCredential, make sure the `proof` is an actual `Secp256k1Proof` object, otherwise the `nonce` field will be missing!
 - Unrecognized fields (like `verificationMethod` and `created`) can be found in `proof.additionalFields`
 - To make use of proper typehinting (without relying on `additionalFields`), [cast the proof to the correct type](README.md#proofs)

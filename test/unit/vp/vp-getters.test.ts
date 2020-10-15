@@ -15,7 +15,7 @@
  */
 
 import { assert } from 'chai'
-import { BaseProof, IVerifiablePresentationParams, VerifiablePresentation } from '../../../src'
+import { IVerifiablePresentationParams, VerifiablePresentation } from '../../../src'
 import { verifiablePresentationTestData } from '../test-helper'
 
 describe('verfiable presentation getters', function () {
@@ -31,12 +31,53 @@ describe('verfiable presentation getters', function () {
     assert.strictEqual(sut.id, verifiablePresentationTestData.id)
   })
 
-  it('should return an unchanged type', () => {
+  it('should return type as array (unchanged)', () => {
     assert.strictEqual(sut.type, verifiablePresentationTestData.type)
   })
 
-  it('should return an unchanged proof', () => {
-    assert.deepStrictEqual(sut.proof, verifiablePresentationTestData.proof.map(x => new BaseProof(x)))
+  it('should return type string as array', () => {
+    const type = 'someSingleType'
+    const vpSut = new VerifiablePresentation({
+      type: type,
+      verifiableCredential: verifiablePresentationTestData.verifiableCredential
+    })
+    assert.deepEqual(vpSut.typeAsArray(), [type])
+  })
+
+  it('should return type as string', () => {
+    const type = 'someSingleType'
+    const vpSut = new VerifiablePresentation({
+      type: type,
+      verifiableCredential: verifiablePresentationTestData.verifiableCredential
+    })
+    assert.deepStrictEqual(vpSut.type, type)
+  })
+
+  it('should return an unchanged proof (single obj)', () => {
+    const singleProofSut = new VerifiablePresentation({
+      id: verifiablePresentationTestData.id,
+      type: verifiablePresentationTestData.type,
+      verifiableCredential: verifiablePresentationTestData.verifiableCredential,
+      proof: verifiablePresentationTestData.proof[0],
+      '@context': verifiablePresentationTestData['@context']
+    })
+    assert.deepStrictEqual(singleProofSut.proof, verifiablePresentationTestData.proof[0])
+  })
+
+  it('should return a single proof object as array', () => {
+    const singleProofSut = new VerifiablePresentation({
+      id: verifiablePresentationTestData.id,
+      type: verifiablePresentationTestData.type,
+      verifiableCredential: verifiablePresentationTestData.verifiableCredential,
+      proof: verifiablePresentationTestData.proof[0],
+      '@context': verifiablePresentationTestData['@context']
+    })
+    assert.equal(singleProofSut.proofAsArray().length, 1)
+    assert.deepStrictEqual(singleProofSut.proofAsArray()[0], verifiablePresentationTestData.proof[0])
+  })
+
+  it('should return an unchanged proof (array)', () => {
+    assert.deepStrictEqual(sut.proof, verifiablePresentationTestData.proof)
   })
 
   it('should return an unchanged verifiable credential', () => {

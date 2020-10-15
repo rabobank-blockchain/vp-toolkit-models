@@ -86,6 +86,19 @@ describe('verifiable presentation constructor', function () {
     assert.doesNotThrow(createSut)
   })
 
+  it('should accept one proof object', () => {
+    const createSut = () => {
+      return new VerifiablePresentation({
+        id: verifiablePresentationTestData.id,
+        type: verifiablePresentationTestData.type,
+        verifiableCredential: verifiablePresentationTestData.verifiableCredential,
+        proof: verifiablePresentationTestData.proof[0]
+      })
+    }
+
+    assert.doesNotThrow(createSut)
+  })
+
   it('should not accept empty verifiablecredential array', () => {
     const createSut = () => {
       return new VerifiablePresentation({

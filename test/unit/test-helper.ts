@@ -22,6 +22,7 @@ import {
   ISecp256k1ProofParams,
   IVerifiableCredentialParams,
   IVerifiablePresentationParams,
+  Secp256k1Proof,
   VerifiableCredential
 } from '../../src'
 
@@ -89,7 +90,7 @@ export const testCredential = new VerifiableCredential(testCredentialParams)
 export const verifiablePresentationTestData = {
   id: 'urn:uuid:3978344f-8596-4c3a-a978-8fcaba3903c5',
   type: ['VerifiablePresentation'],
-  proof: [testProofParams],
+  proof: [new Secp256k1Proof(testProofParams)],
   verifiableCredential: [testCredential],
   '@context': ['https://schema.org/givenName']
 }
@@ -97,6 +98,6 @@ export const verifiablePresentationTestData = {
 export const testVp: IVerifiablePresentationParams = {
   id: 'urn:uuid:3978344f-8596-4c3a-a978-8fcaba3903c5',
   type: ['VerifiablePresentation'],
-  proof: [testProofParams],
+  proof: [new Secp256k1Proof(testProofParams)],
   verifiableCredential: [testCredential]
 }
