@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { IProofParams, Proof } from './proof'
+import { BaseProof, IBaseProofParams } from './proofs/base-proof'
 import { CredentialStatus, ICredentialStatusParams } from './credential-status'
 import { Expose, Transform } from 'class-transformer'
 import { FlexibleOrderedModel } from './flexible-ordered-model'
@@ -24,26 +24,16 @@ import { FlexibleOrderedModel } from './flexible-ordered-model'
  * VerifiableCredential. This interface does not specify the structure of
  * a VerifiableCredential. Due to unclarities, this interface will be
  * renamed to IVerifiableCredentialParams.
- *
- * @deprecated Will be removed in v0.2, use IVerifiableCredentialParams instead
  */
-export interface IVerifiableCredential {
+export interface IVerifiableCredentialParams extends Record<string, any> { // Basically 'extends any'
   id?: string
-  type: string[]
+  type: string | string[]
   issuer: string
   issuanceDate: Date
   credentialSubject: any
-  proof?: IProofParams
+  proof: IBaseProofParams
   credentialStatus?: ICredentialStatusParams
   '@context'?: string[]
-}
-
-/**
- * Declares the needed parameters
- * to construct a VerifiableCredential
- */
-// tslint:disable-next-line
-export interface IVerifiableCredentialParams extends IVerifiableCredential {
 }
 
 /**
@@ -51,28 +41,30 @@ export interface IVerifiableCredentialParams extends IVerifiableCredential {
  * @see https://w3c.github.io/vc-data-model/#credentials
  */
 export class VerifiableCredential extends FlexibleOrderedModel {
+  /**
+   * These fields must be present and not empty
+   * when constructing this class.
+   */
+  public static nonEmptyFields = ['type', 'issuer', 'issuanceDate', 'credentialSubject', 'proof']
+
   private readonly _id?: string
-  private readonly _type: string[]
   private readonly _issuer: string
   private readonly _issuanceDate: Date
   private readonly _credentialSubject: any
-  private readonly _proof: Proof
+  private readonly _type: string | string[]
   private readonly _credentialStatus: CredentialStatus | undefined
   private readonly _context: string[] | undefined
+  private readonly _proof: BaseProof
 
   constructor (obj: IVerifiableCredentialParams) {
-    if (!obj.type || obj.type.length === 0 || obj.type.join().length === obj.type.length - 1
-      || !obj.issuer || !obj.issuanceDate || !obj.credentialSubject || !obj.proof) {
-      throw new ReferenceError('One or more fields are empty')
-    }
-    super(obj)
+    super(obj, VerifiableCredential.nonEmptyFields)
 
     this._id = obj.id
     this._type = obj.type
     this._issuer = obj.issuer
     this._issuanceDate = new Date(obj.issuanceDate)
     this._credentialSubject = obj.credentialSubject
-    this._proof = new Proof(obj.proof)
+    this._proof = obj.proof instanceof BaseProof ? obj.proof : new BaseProof(obj.proof)
     this._credentialStatus = obj.credentialStatus ? new CredentialStatus(obj.credentialStatus) : undefined
     this._context = obj['@context']
     this.initializeAdditionalFields(obj, this)
@@ -114,10 +106,10 @@ export class VerifiableCredential extends FlexibleOrderedModel {
 
   /**
    * The VC type
-   * @return string[]
+   * @return {string | string[]}
    */
   @Expose()
-  public get type (): string[] {
+  public get type (): string | string[] {
     return this._type
   }
 
@@ -153,11 +145,11 @@ export class VerifiableCredential extends FlexibleOrderedModel {
 
   /**
    * The proof for this VC
-   * @return Proof
+   * @return BaseProof
    */
   @Expose()
-  @Transform((proof: Proof) => proof.toJSON())
-  public get proof (): Proof {
+  @Transform((proof: BaseProof) => proof.toJSON())
+  public get proof (): BaseProof {
     return this._proof
   }
 
@@ -173,5 +165,15 @@ export class VerifiableCredential extends FlexibleOrderedModel {
   })
   public get credentialStatus (): CredentialStatus | undefined {
     return this._credentialStatus
+  }
+
+  /**
+   * Sometimes the Type can be of type string
+   * instead of an array. This method always returns
+   * the type as an array.
+   * @return string[]
+   */
+  public typeAsArray (): string[] {
+    return typeof this._type === 'string' ? [this._type] : this._type
   }
 }

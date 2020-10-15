@@ -8,8 +8,8 @@
 A TypeScript/JavaScript library containing models for [w3c verifiable credentials](https://w3c.github.io/vc-data-model/):
 - [Verifiable Credential](src/model/verifiable-credential.ts)
 - [Verifiable Presentation](src/model/verifiable-presentation.ts)
-- [Challenge Request](src/model/challenge-request.ts) _(not part of the official specification)_
-- [Proof](src/model/proof.ts) _(will be part of the objects above)_
+- [Challenge Request](src/model/challenge-request.ts) _(not part of the w3c specification)_
+- [Proof](src/model/proofs/base-proof.ts) _(will be part of the objects above)_
 
 ## Installation
 
@@ -21,18 +21,15 @@ npm install vp-toolkit-models --save
 
 ## Usage
 
-We strongly advise the [vp-toolkit](https://github.com/rabobank-blockchain/vp-toolkit) library to generate and verify these models more easily.
-You can create the models by passing the required values through the constructor.
-
 ### Example (VerifiableCredential)
 
-The example below creates an unsigned VerifiableCredential object. To create a signed object, please use `vp-toolkit`.
+The example below creates an unsigned VerifiableCredential object. To create a signed object easily, please use [`vp-toolkit`](github.com/rabobank-blockchain/vp-toolkit).
 ```typescript
-import { VerifiableCredential, IVerifiableCredentialParams } from 'vp-toolkit-models'
+import { VerifiableCredential } from 'vp-toolkit-models'
 
 const verifiableCredential = new VerifiableCredential({
   '@context': ['https://www.w3.org/2018/credentials/v1'], // Optional
-  type: ['VerifiableCredential'],
+  type: ['VerifiableCredential', 'GovernmentId'],
   issuer: 'did:eth:0x6E29B1AE22195f9d59C1a468E292b78A8E6e15D1', // Issuer DID
   issuanceDate: new Date(),
   credentialSubject: {
@@ -47,26 +44,70 @@ const verifiableCredential = new VerifiableCredential({
     type: 'vcStatusRegistry2019' // The registry type
   },
   someOtherRandomField: 'anyValue', // Dynamic fields are accepted
-  issuerName: 'YourOrganisation', // Optional
-  issuerIcon: 'https://example.com/logo.png', // Optional
   proof: { // Required when sending to the counterparty
-    type: 'SignatureAlgorithmName',
-    created: new Date(), // UTC time will be used from this value
+    type: 'Secp256k1Signature2019', // Mandatory, the rest is optional
+    created: new Date(), // UTC time
     verificationMethod: 'publicKey',
     nonce: '547d06de-7f1b-4040-8ad0-cbee414a4a7f',
     signatureValue: 'generated signature value'
   }
-} as IVerifiableCredentialParams)
+})
 
 // Dynamic fields can be found in the additionalFields property
 const someOtherRandomField = verifiableCredential.additionalFields['someOtherRandomField']
 
-// Models can be stringified and parsed - the order of fields will not change.
+// Models can be stringified and parsed - the order of fields will remain as original
 const string = JSON.stringify(verifiableCredential)
 ```
 
 The same approach works for a VerifiablePresentation and ChallengeRequest - but with different fields, obviously.
 The ChallengeRequest object supports Zero Knowledge Range Proof by offering the `lowerBound` and `upperBound` fields.
+
+## Proofs
+
+Verifiable Credentials and Presentations can be signed using various cryptographic suites.
+Every signature method has its own set of fields.
+This model definition instantiates all proofs as a BaseProof, only requiring a `type` field. Other fields are accessible through the `additionalFields` property.
+An out-of-the-box definition for `Secp256k1Signature2019` is provided, but if you'd like to introduce your own proof model definition, feel free to copy-paste and specify the fields you need.
+
+### Casting the BaseProof to a specific proof
+
+Since the default `BaseProof` causes loss of strict typing, you can cast it to another Type.
+For example, the VerifiableCredential's proof can be casted to a `Secp256k1Signature2019`: 
+```typescript
+const castedProof = Secp256k1Proof.cast(verifiableCredential.proof)
+```
+
+*Note, `BaseProof` does not cause any loss of fields. `BaseProof.toJSON()` puts the fields back in order as they originally were.*
+
+### Your own proof
+
+Introduce your own proof structure by applying this class template:
+```typescript
+export interface IYourProofParams extends Record<string, any> { // Basically extends 'any'
+  yourCustomField: string
+}
+
+export class YourProof extends BaseProof {
+  public static nonEmptyFields = ['yourCustomField']
+  public static supportsType = 'YourProofType'
+
+  constructor (obj: IYourProofParams) {
+    const fieldsToConstruct = Object.assign({}, obj)
+    fieldsToConstruct.yourCustomField = doSomethingWith(obj.yourCustomField) // Some field conversions if needed
+
+    super(fieldsToConstruct, YourProof.nonEmptyFields)
+  }
+
+  public get yourCustomField (): string {
+    return this.get<string>('yourCustomField')
+  }
+
+  public static cast (t: BaseProof): YourProof {
+    return new YourProof(t.toJSON() as IYourProofParams)
+  }
+}
+```
 
 ## Extending models
 

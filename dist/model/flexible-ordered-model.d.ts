@@ -26,33 +26,34 @@ import { OrderedModel } from './ordered-model'
  * inherited model definition.
  */
 export declare class FlexibleOrderedModel extends OrderedModel {
-  /**
-   * This property will return all
-   * fields as key-value pairs.
-   * @return any
-   */
-  readonly additionalFields: any
-  protected readonly _additionalFields: any
+    protected readonly _additionalFields: any
 
-  constructor (obj: any);
+    constructor (obj: any, validateNonEmptyFields?: string[]);
 
-  /**
-   * Converts this object to a json string
-   * using the exact same field order as it
-   * was constructed, including the additional
-   * fields.
-   * @return object
-   */
-  toJSON (): object;
+    /**
+     * This property will return all
+     * fields as key-value pairs.
+     * @return any
+     */
+    get additionalFields (): any;
 
-  /**
-   * This method will find all additional fields which are passed to
-   * your constructor, but are not declared in your model definition.
-   * These additional fields will be stored and can be accessed through
-   * yourModel.additionalFields.yourCustomField
-   *
-   * @param constructorParams The constructor params your class received
-   * @param childObject Your model instance that from extends this class
-   */
-  protected initializeAdditionalFields (constructorParams: any, childObject: any): void;
+    /**
+     * Converts this object to a json string
+     * using the exact same field order as it
+     * was constructed, including the additional
+     * fields.
+     * @return object
+     */
+    toJSON (): any;
+
+    /**
+     * This method will find all additional fields which are passed to
+     * your constructor, but are not declared in your model definition.
+     * These additional fields will be stored and can be accessed through
+     * yourModel.additionalFields.yourCustomField
+     *
+     * @param constructorParams The constructor params your class received
+     * @param childObject Your model instance that from extends this class
+     */
+    protected initializeAdditionalFields (constructorParams: any, childObject: any): void;
 }

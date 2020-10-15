@@ -15,7 +15,7 @@
  */
 
 import { assert } from 'chai'
-import { ChallengeRequest, Proof } from '../../../src'
+import { BaseProof, ChallengeRequest } from '../../../src'
 import { challengeRequestTestData, testProofParams } from '../test-helper'
 
 describe('challenge request getters', function () {
@@ -25,6 +25,10 @@ describe('challenge request getters', function () {
     correspondenceId: challengeRequestTestData.correspondenceId,
     postEndpoint: challengeRequestTestData.postEndpoint,
     proof: testProofParams
+  })
+
+  it('should return the static version number', () => {
+    assert.equal(sut.version, ChallengeRequest.version)
   })
 
   it('should return a valid uuid v4 correspondenceId when it is not provided', () => {
@@ -91,6 +95,6 @@ describe('challenge request getters', function () {
   })
 
   it('should return an unchanged proof value', () => {
-    assert.deepEqual(sut.proof, new Proof(testProofParams))
+    assert.deepEqual(sut.proof, new BaseProof(testProofParams))
   })
 })

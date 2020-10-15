@@ -16,6 +16,7 @@
 
 import { OrderedModel } from './ordered-model'
 import { classToPlain } from 'class-transformer'
+import { ConstructError } from '..'
 
 /**
  * This super class keeps track of all
@@ -29,9 +30,20 @@ import { classToPlain } from 'class-transformer'
 export class FlexibleOrderedModel extends OrderedModel {
   protected readonly _additionalFields: any
 
-  constructor (obj: any) {
+  constructor (obj: any, validateNonEmptyFields?: string[]) {
     super(obj)
     this._additionalFields = []
+    if (!validateNonEmptyFields) return
+
+    for (const nonEmptyField of validateNonEmptyFields) {
+      if (!Object.keys(obj).includes(nonEmptyField)) {
+        throw new ConstructError('Can\'t construct ' + this.constructor.name + ': "' + nonEmptyField + '" field is missing')
+      }
+      if (obj[nonEmptyField] === undefined || obj[nonEmptyField] === null || obj[nonEmptyField].length === 0
+        || (Array.isArray(obj[nonEmptyField]) && obj[nonEmptyField].filter((val: any) => val.length > 0).length === 0)) {
+        throw new ConstructError('Can\'t construct ' + this.constructor.name + ': "' + nonEmptyField + '" field is empty')
+      }
+    }
   }
 
   /**
@@ -50,7 +62,7 @@ export class FlexibleOrderedModel extends OrderedModel {
    * fields.
    * @return object
    */
-  public toJSON (): object {
+  public toJSON (): any {
     const unorderedObj = classToPlain(this, { excludePrefixes: ['_'] }) as any
 
     // Merge the dynamic fields with the object

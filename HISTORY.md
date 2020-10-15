@@ -1,3 +1,41 @@
+# 0.3.0 / 01-09-2020
+
+**BREAKING**
+- Dropped support for Node version 8-11
+- Detailed errors: `ConstructError("Can't construct {MODELNAME}: "' + nonEmptyField + '" field is {missing/empty}")`
+- `IVerifiableCredential` renamed to `IVerifiableCredentialParams`
+- `IVerifiablePresentation` renamed to `IVerifiablePresentationParams`
+- `ICredentialStatus` renamed to `ICredentialStatusParams`
+- `IChallengeRequest` renamed to `IChallengeRequestParams`
+- `IVerifiableCredentialParams.proof` is now required (was optional before)
+- The `type` field in `VerifiableCredential` and `VerifiablePresentation` was of type `string[]`, but is now `string | string[]`
+- `Proof` was too tightly coupled with the secp256k1 proof structure. `Proof` is now `BaseProof` which only requires a `type` field and the rest is dynamic
+- The `VerifiablePresentation.proof` type changed from `Proof[]` to `BaseProof | BaseProof[]`
+
+*Migration steps:*
+- Rename your `Proof` import to `Secp256k1Proof`
+- Use `verifiablePresentation.proofAsArray()` instead of `verifiablePresentation.proof` to retrieve the proof as an array
+- For `VerifiablePresentation` and `VerifiableCredential`, use `.typeAsArray()` instead of `.type` to retrieve the type as an array
+- When constructing a VerifiablePresentation or VerifiableCredential, make sure the `proof` is an actual `Secp256k1Proof` object, otherwise the `nonce` field will be missing!
+- Unrecognized fields (like `verificationMethod` and `created`) can be found in `proof.additionalFields`
+- To make use of proper typehinting (without relying on `additionalFields`), [cast the proof to the correct type](README.md#proofs)
+
+**Enhancements**
+- `ChallengeRequest` has a `version` property
+- The `I....Params` interfaces now define a minimum set of required fields, but are not restricted to those fields only.
+This means that structures like `const x: IxParams = {requiredField: 'x', someOtherField: 'x'}` are possible without casting them `as IxParams`
+- Added `VerifiableCredential.typeAsArray()` to get the type consistently
+- Updated all dependencies to their latest major versions
+- Added support for Node v13 and v14
+
+**Bugfixes**
+- Exporting `IToVerifyParams` and `IToAttestParams` (belongs to `ChallengeRequest` model)
+
+# 0.2.3 / 24-07-2020
+
+**Enhancements**
+- Security Patches for dependent packages
+
 # 0.2.2 / 20-01-2020
 
 **Bugfixes**

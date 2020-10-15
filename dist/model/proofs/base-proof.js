@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-"use strict";
+"use strict"
 /*
  * Copyright 2020 Coöperatieve Rabobank U.A.
  *
@@ -38,28 +38,26 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
   return c > 3 && r && Object.defineProperty(target, key, r), r
 }
 Object.defineProperty(exports, "__esModule", {value: true})
-exports.CredentialStatus = void 0
+exports.BaseProof = void 0
 const class_transformer_1 = require("class-transformer")
-const ordered_model_1 = require("./ordered-model")
+const flexible_ordered_model_1 = require("../flexible-ordered-model")
 
 /**
- * W3C Verifiable Credential CredentialStatus model
- * Used for checking whether the credential is revoked or suspended
- * @see https://w3c.github.io/vc-data-model/#status
- * @see https://w3c-ccg.github.io/vc-status-registry/
+ * The minimum required field(s) for a
+ * Verifiable Credential / Presentation Proof
  */
-class CredentialStatus extends ordered_model_1.OrderedModel {
-  constructor(obj) {
-    if (!obj.id || !obj.type) {
-      throw new ReferenceError('One or more fields are empty')
-    }
-    super(obj)
-    this._id = obj.id
+class BaseProof extends flexible_ordered_model_1.FlexibleOrderedModel {
+  constructor(obj, validateNonEmptyFields) {
+    super(obj, validateNonEmptyFields !== undefined ? BaseProof.nonEmptyFields.concat(validateNonEmptyFields) : undefined)
     this._type = obj.type
+    // All fields (except Type) will end up in additionalFields.
+    // If you extend this class, please use the get() method to access
+    // specific fields that are defined in your model definition.
+    this.initializeAdditionalFields(obj, this)
   }
 
   /**
-   * The name of the credential status type
+   * The name of the signature type
    * @return string
    */
   get type() {
@@ -67,20 +65,38 @@ class CredentialStatus extends ordered_model_1.OrderedModel {
   }
 
   /**
-   * The ID which can be consulted according to the type
-   * According to the spec this must be an URL, but we can
-   * also use it to refer to a blockchain contract address
-   * @return string
+   * Cast the object to the correct Proof type.
+   * ALWAYS override this method if you built
+   * your own proof type that inherits BaseProof!
+   * @return this
    */
-  get id() {
-    return this._id
+  static cast(t) {
+    return new BaseProof(t.toJSON())
+  }
+
+  /**
+   * Get a dynamic property
+   */
+  get(fieldName) {
+    return this.additionalFields[fieldName]
+  }
+
+  /**
+   * Set/overwrite a dynamic property
+   */
+  set(fieldName, value) {
+    return this.additionalFields[fieldName] = value
   }
 }
+
+/**
+ * These fields must be present and not empty
+ * when constructing this class.
+ */
+BaseProof.nonEmptyFields = ['type']
+BaseProof.supportsType = '*'
 __decorate([
-    class_transformer_1.Expose()
-], CredentialStatus.prototype, "type", null);
-__decorate([
-    class_transformer_1.Expose()
-], CredentialStatus.prototype, "id", null);
-exports.CredentialStatus = CredentialStatus;
-//# sourceMappingURL=credential-status.js.map
+  class_transformer_1.Expose()
+], BaseProof.prototype, "type", null)
+exports.BaseProof = BaseProof
+//# sourceMappingURL=base-proof.js.map

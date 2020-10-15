@@ -18,23 +18,25 @@
 
 import {
   CredentialStatus,
-  IProofParams,
+  IChallengeRequestParams,
+  ISecp256k1ProofParams,
   IVerifiableCredentialParams,
   IVerifiablePresentationParams,
+  Secp256k1Proof,
   VerifiableCredential
 } from '../../src'
 
 /**
  * Proof containing a type, created date and verification method with static, fictive data
  */
-export const testProofParams: IProofParams = {
+export const testProofParams: ISecp256k1ProofParams = {
   type: 'SignatureAlgorithmName',
   created: new Date('01-01-2019'),
   verificationMethod: 'verification method',
   nonce: 'f8bdf225-a6b3-49df-8d6a-201943a0b36d'
 }
 
-export const challengeRequestTestData = {
+export const challengeRequestTestData: IChallengeRequestParams = {
   toAttest: [
     { predicate: 'https://schema.org/FinancialProduct' }
   ],
@@ -63,7 +65,7 @@ const testCredStatus = new CredentialStatus({
   type: 'vcStatusRegistry2019'
 })
 
-export const testCredentialParams = {
+export const testCredentialParams: IVerifiableCredentialParams = {
   id: 'did:protocol:address',
   type: ['VerifiableCredential'],
   issuer: 'did:protocol:issueraddress',
@@ -75,20 +77,20 @@ export const testCredentialParams = {
   proof: {
     type: 'SignatureAlgorithmName',
     created: new Date('01-01-2019'),
-    verificationMethod: 'verification method',
+    verificationMethod: 'verification method X',
     nonce: '547d06de-7f1b-4040-8ad0-cbee414a4a7f'
   },
   credentialStatus: testCredStatus,
   optionalField: 'optionalContent',
   '@context': ['https://www.w3.org/2018/credentials/v1', 'https://schema.org/givenName']
-} as IVerifiableCredentialParams
+}
 
 export const testCredential = new VerifiableCredential(testCredentialParams)
 
 export const verifiablePresentationTestData = {
   id: 'urn:uuid:3978344f-8596-4c3a-a978-8fcaba3903c5',
   type: ['VerifiablePresentation'],
-  proof: [testProofParams],
+  proof: [new Secp256k1Proof(testProofParams)],
   verifiableCredential: [testCredential],
   '@context': ['https://schema.org/givenName']
 }
@@ -96,6 +98,6 @@ export const verifiablePresentationTestData = {
 export const testVp: IVerifiablePresentationParams = {
   id: 'urn:uuid:3978344f-8596-4c3a-a978-8fcaba3903c5',
   type: ['VerifiablePresentation'],
-  proof: [testProofParams],
+  proof: [new Secp256k1Proof(testProofParams)],
   verifiableCredential: [testCredential]
 }
