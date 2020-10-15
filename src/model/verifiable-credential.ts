@@ -32,7 +32,9 @@ export interface IVerifiableCredential {
   type: string[]
   issuer: string
   issuanceDate: Date
+  expirationDate?: Date
   credentialSubject: any
+  termsOfUse?: ITermsOfUse[]
   proof?: IProofParams
   credentialStatus?: ICredentialStatusParams
   '@context'?: string[]
@@ -47,6 +49,15 @@ export interface IVerifiableCredentialParams extends IVerifiableCredential {
 }
 
 /**
+ * Terms Of Use to be used in
+ * a verifiable credential
+ */
+export interface ITermsOfUse {
+  id?: string
+  type: string
+}
+
+/**
  * W3C Verifiable Credential model (VC)
  * @see https://w3c.github.io/vc-data-model/#credentials
  */
@@ -55,7 +66,9 @@ export class VerifiableCredential extends FlexibleOrderedModel {
   private readonly _type: string[]
   private readonly _issuer: string
   private readonly _issuanceDate: Date
+  private readonly _expirationDate?: Date
   private readonly _credentialSubject: any
+  private readonly _termsOfUse?: ITermsOfUse[]
   private readonly _proof: Proof
   private readonly _credentialStatus: CredentialStatus | undefined
   private readonly _context: string[] | undefined
@@ -71,7 +84,11 @@ export class VerifiableCredential extends FlexibleOrderedModel {
     this._type = obj.type
     this._issuer = obj.issuer
     this._issuanceDate = new Date(obj.issuanceDate)
+    if (obj.expirationDate) {
+      this._expirationDate = new Date(obj.expirationDate)
+    }
     this._credentialSubject = obj.credentialSubject
+    this._termsOfUse = obj.termsOfUse
     this._proof = new Proof(obj.proof)
     this._credentialStatus = obj.credentialStatus ? new CredentialStatus(obj.credentialStatus) : undefined
     this._context = obj['@context']
@@ -140,6 +157,15 @@ export class VerifiableCredential extends FlexibleOrderedModel {
   }
 
   /**
+   * The optional expiration date in a ISO 8601 format
+   * @return {string|undefined}
+   */
+  @Expose()
+  public get expirationDate (): string | undefined {
+    return this._expirationDate ? this._expirationDate.toISOString() : undefined
+  }
+
+  /**
    * The collection of claims
    * The credentialSubject may contain an 'id' field,
    * but it is not mandatory
@@ -149,6 +175,15 @@ export class VerifiableCredential extends FlexibleOrderedModel {
   @Expose()
   public get credentialSubject (): any {
     return this._credentialSubject
+  }
+
+  /**
+   * Optional terms of use
+   * @return {ITermsOfUse[]|undefined}
+   */
+  @Expose()
+  public get termsOfUse (): ITermsOfUse[] | undefined {
+    return this._termsOfUse
   }
 
   /**
