@@ -17,7 +17,7 @@
 import * as sinon from 'sinon'
 import { assert } from 'chai'
 import { IProofParams, IVerifiableCredentialParams, Proof, VerifiableCredential } from '../../../src'
-import { testCredentialParams } from '../test-helper'
+import { testCredentialParams, testCredentialTermsOfUse } from '../test-helper'
 
 describe('verifiable credential getters', function () {
   let clock: sinon.SinonFakeTimers
@@ -49,6 +49,44 @@ describe('verifiable credential getters', function () {
 
   it('should return an issuer type', () => {
     assert.strictEqual(sut.issuer, testCredentialParams.issuer)
+  })
+
+  it('should return "expirationDate" undefined', () => {
+    assert.strictEqual(sut.expirationDate, undefined)
+  })
+
+  it('should return "termsOfUse" undefined', () => {
+    assert.strictEqual(sut.termsOfUse, undefined)
+  })
+
+  it('should return "termsOfUse"', () => {
+    const vcSut = new VerifiableCredential({
+      id: testCredentialParams.id,
+      type: testCredentialParams.type,
+      issuer: testCredentialParams.issuer,
+      issuanceDate: testCredentialParams.issuanceDate,
+      termsOfUse: testCredentialTermsOfUse,
+      credentialSubject: testCredentialParams.credentialSubject,
+      proof: testCredentialParams.proof
+    })
+
+    assert.strictEqual(vcSut.termsOfUse, testCredentialTermsOfUse)
+  })
+
+  it('should return "expirationDate" in ISO 8601 format', () => {
+    // We are using UTC dates here so the unit test is deterministic
+    const expires = new Date(Date.UTC(2021, 0, 30, 12, 23, 34, 456))
+    const vcSut = new VerifiableCredential({
+      id: testCredentialParams.id,
+      type: testCredentialParams.type,
+      issuer: testCredentialParams.issuer,
+      issuanceDate: testCredentialParams.issuanceDate,
+      expirationDate: expires,
+      credentialSubject: testCredentialParams.credentialSubject,
+      proof: testCredentialParams.proof
+    })
+
+    assert.strictEqual(vcSut.expirationDate, '2021-01-30T12:23:34.456Z')
   })
 
   it('should return "issuanceDate" in ISO 8601 format', () => {
@@ -105,12 +143,15 @@ describe('verifiable credential getters', function () {
 
   it('should return a correct flattened object with extra optional fields', () => {
     const proof = testCredentialParams.proof as IProofParams
+    const expiration = new Date('01-01-2021 12:00:00')
     const vcSut = new VerifiableCredential({
       id: testCredentialParams.id,
       type: testCredentialParams.type,
       issuer: testCredentialParams.issuer,
       issuanceDate: testCredentialParams.issuanceDate,
+      expirationDate: expiration,
       credentialSubject: testCredentialParams.credentialSubject,
+      termsOfUse: testCredentialTermsOfUse,
       proof: proof,
       credentialStatus: testCredentialParams.credentialStatus,
       '@context': testCredentialParams['@context'],
@@ -119,7 +160,7 @@ describe('verifiable credential getters', function () {
       testFieldThree: 3
     } as IVerifiableCredentialParams)
 
-    assert.deepEqual(JSON.stringify(vcSut), `{"id":"did:protocol:address","type":["VerifiableCredential"],"issuer":"did:protocol:issueraddress","issuanceDate":"${testCredentialParams.issuanceDate.toISOString()}","credentialSubject":{"id":"did:protocol:holderaddress","type":"John"},"proof":{"type":"SignatureAlgorithmName","created":"${proof.created.toISOString()}","verificationMethod":"verification method","nonce":"${proof.nonce}"},"credentialStatus":{"type":"vcStatusRegistry2019","id":"0x6AbAAFB672f60C16C604A29426aDA1Af9d96d440"},"@context":["https://www.w3.org/2018/credentials/v1","https://schema.org/givenName"],"testFieldOne":"abc","testFieldTwo":["def"],"testFieldThree":3}`)
+    assert.deepEqual(JSON.stringify(vcSut), `{"id":"did:protocol:address","type":["VerifiableCredential"],"issuer":"did:protocol:issueraddress","issuanceDate":"${testCredentialParams.issuanceDate.toISOString()}","expirationDate":"${expiration.toISOString()}","credentialSubject":{"id":"did:protocol:holderaddress","type":"John"},"termsOfUse":[{"id":"https://corporate.com/cred-tos/v1","type":"test","legal":"No liabilities for the issuer"}],"proof":{"type":"SignatureAlgorithmName","created":"${proof.created.toISOString()}","verificationMethod":"verification method","nonce":"${proof.nonce}"},"credentialStatus":{"type":"vcStatusRegistry2019","id":"0x6AbAAFB672f60C16C604A29426aDA1Af9d96d440"},"@context":["https://www.w3.org/2018/credentials/v1","https://schema.org/givenName"],"testFieldOne":"abc","testFieldTwo":["def"],"testFieldThree":3}`)
   })
 
   it('should return an unchanged context', () => {

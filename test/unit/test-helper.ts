@@ -23,6 +23,7 @@ import {
   IVerifiablePresentationParams,
   VerifiableCredential
 } from '../../src'
+import { ITermsOfUse } from '../../src/model/verifiable-credential'
 
 /**
  * Proof containing a type, created date and verification method with static, fictive data
@@ -62,6 +63,14 @@ const testCredStatus = new CredentialStatus({
   id: '0x6AbAAFB672f60C16C604A29426aDA1Af9d96d440',
   type: 'vcStatusRegistry2019'
 })
+
+export const testCredentialTermsOfUse = [
+  {
+    id: 'https://corporate.com/cred-tos/v1',
+    type: 'test',
+    legal: 'No liabilities for the issuer'
+  } as ITermsOfUse
+]
 
 export const testCredentialParams = {
   id: 'did:protocol:address',
